@@ -1,2 +1,41 @@
 % !TEX root = ../Grunddatei.tex
 \section{Overview of Current Verification Projects}
+
+This chapter compares several tools for verification in Rust against each other.
+There are three main categories in which the tools get classified: static analysis, dynamic analysis and other.
+
+The following parameters of the tools are broken down and compared against:
+
+\textbf{Usability}
+
+Does the tool work fully autonomous or does it need some manual steps? How to integrate Rust source code into the tool?
+
+\textbf{Technology}
+
+What technology does the tool for generating and validating the proofs? How powerful is this technology? Can it be customized to specific needs, e.g. a special SMT solver?
+
+\textbf{Feedback}
+
+How does the tool report errors or success? If so, does the tool return evidence to the contrary?
+
+\textbf{Language support}
+
+Is the tool supporting all language features of Rust? What are the limitations? What kind of verification conditions does the tool support?
+
+\textbf{Development}
+
+Who has developed the tool? Is it backed by a company?
+
+\textbf{Activity}
+
+Is the tool in active development or abandoned? Is it feature complete? Does the tool get used in production?
+
+\textbf{Scientific activity}
+
+Does the tool often get quoted in scientific publications, workshops or presentations?
+
+\textbf{Documentation}
+
+Is there a viable available documentation for that tool?
+
+\subsection{Static Analysis}
