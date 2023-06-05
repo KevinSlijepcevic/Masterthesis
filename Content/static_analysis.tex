@@ -9,7 +9,7 @@ Prusti is a verification framework whose development has started in 2017 at the 
 
 \begin{itemize}
     \item Provide functional correctness properties for Rust programs, without depending on Rust's safety guarantees \cite{deshmukh_prusti_2022}.
-    \item Make verification accessible to programmers without needing the domain knowledge of verification \cite{deshmukh_prusti_2022}.
+    \item Make verification accessible to programmers without requiring the domain knowledge of verification \cite{deshmukh_prusti_2022}.
     \item Make the usage of Prusti easy for Rust programmers \cite{deshmukh_prusti_2022}.
 \end{itemize}
 
@@ -64,11 +64,11 @@ The Prusti Assistant for Visual Studio Code provides even more convenience, as i
 
 \subsubsection{Language support and verification features}
 
-Prusti can only prove partial correctness. The user has to ensure that the Rust code terminates, otherwise the guarantees made by Prusti may not hold up \cite{noauthor_verification_2023}.
+Prusti can only prove partial correctness \cite{noauthor_verification_2023}. The user has to ensure that the Rust code terminates, otherwise the guarantees made by Prusti may not hold up \cite{noauthor_verification_2023}.
 
 Prusti currently only supports the safe Rust dialect. Support for the unsafe part of Rust is planned \cite{astrauskas_leveraging_2019}, though it is possible today to encapsulate unsafe Rust code and exclude it from the verifying process with the \lstinline{#[trusted]} annotation \cite{noauthor_trusted_2023}. This is also helpful if a function uses techniques, which aren't supported by Prusti (yet) \cite{noauthor_trusted_2023}.
 
-Prusti supports designing pre- and postconditions for functions. It is possible to call \textit{pure} Rust functions in these conditions, as well as calling \textit{predicates} \cite{noauthor_predicates_2023}, which have been designed with the \lstinline{predicate!()} macro \cite{deshmukh_prusti_2022}. These predicates can be equipped with quantifiers \cite{deshmukh_prusti_2022}. 
+Prusti supports designing pre- and postconditions for functions, in a \textit{contract} like manner \cite{deshmukh_prusti_2022, astrauskas_leveraging_2019}. It is possible to call \textit{pure} Rust functions in these conditions, as well as calling \textit{predicates} \cite{noauthor_predicates_2023}, which have been designed with the \lstinline{predicate!()} macro \cite{deshmukh_prusti_2022}. These predicates can be equipped with quantifiers \cite{deshmukh_prusti_2022}. 
 
 A remarkable Prusti feature is the support of so called \textit{pledges} \cite{astrauskas_leveraging_2019}. Pledges are used to design specifications for values, which get returned as a reborrow from a function call. With the keywords \textit{before\_expiry} and \textit{after\_expiry}, it is possible to define properties before or after the borrow ends, respectively \cite{noauthor_pledges_2023}.
 
@@ -76,18 +76,23 @@ Prusti has support for external specifications. This is necessary for function c
 
 Writing specifications for closures is not supported yet by Prusti \cite{noauthor_closures_2023}. However, Wolff et al. has shown that it is feasible to integrate support for closures into Prusti \cite{wolff_modular_2021}.
 
-Prusti has also support for
+Additionally, Prusti has also support for
 \begin{itemize}
     \item Recursive function calls \cite{deshmukh_prusti_2022}
+    \item Inline assertions, refutations and assumptions \cite{prusti_user_guide_assertions_2023}
     \item Type and loop body invariants \cite{deshmukh_prusti_2022}
+    \item Type-conditional spec refinements \cite{prusti_user_guide_type-conditional_2023}
     \item Implications \cite{noauthor_specification_2023}
     \item Snapshot equality \cite{noauthor_specification_2023}
 \end{itemize}
 
 \subsubsection{Development}
+Prusti has been developed at the ETH Zurich as a proof-of-concept alongside the publication \textit{Leveraging Rust Types for Modular Specification and Verification} \cite{astrauskas_leveraging_2019}. The Swiss National Science Foundation, Facebook and Amazon Web Services are funding the project \cite{eth_zurich_prusti_nodate}. The current projects members from the ETH Zurich are Vytautas Astrauskas, Aurel Bílý, Jonas Fiala, Peter Müller and Federico Poli \cite{eth_zurich_prusti_nodate}. Further members are Christoph Matheja from the DTU Copenhagen and Alex Summers from the UBC in Vancouver, Canada \cite{eth_zurich_prusti_nodate}.
 
 \subsubsection{Activity}
 Aktiv entwickelt Github rezesieren etc. 
+
+Prusti is actively maintained and improved.
 \subsubsection{Scientific activity}
 \subsubsection{Documentation}
 
