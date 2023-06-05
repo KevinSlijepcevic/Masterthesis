@@ -35,7 +35,7 @@ fn incr(val: &mut u32) {
 \subsubsection{Technology}
 The backbone of the verification process in Prusti is the Viper Infrastructure, which also has been developed at the ETH Zurich \cite{jobstmann_viper_2016}. The core of this infrastructure is the Viper intermediate language, which can be compared to other intermediate languages like Boogie or Why3 \cite{jobstmann_viper_2016}. The key advantage of the Viper intermediate language is, compared to the other intermediate languages, the support for permission-based reasoning, in particular \textit{implicit dynamic frames} \cite{deshmukh_prusti_2022, astrauskas_leveraging_2019, jobstmann_viper_2016}.
 
-Viper utilizes verification condition generation to Boogie and symbolic execution via Z3 for its verifying backend \cite{jobstmann_viper_2016}. Viper also propagates as one of its three main purposes the interoperability of its verification backend \cite{jobstmann_viper_2016}. For example, it has been shown that it is possible to swap the default SMT solver Z3 with cvc5 \cite{anthony_supporting_2022}.
+Viper utilizes verification condition generation to Boogie and symbolic execution via Z3 for its verifying backend \cite{jobstmann_viper_2016}. Viper also propagates as one of its three main purposes the interoperability of its verification backend \cite{jobstmann_viper_2016}. For example, it has been shown that it is possible to swap the default Viper SMT solver Z3 with cvc5 \cite{anthony_supporting_2022}.
 
 Prusti generates fully automatically so called \textit{core proofs} in Viper, which represents the guarantees the standard rustc compiler already provides, e.g. for borrowing \cite{astrauskas_leveraging_2019}. These core proofs are necessary, because they provide the foundation for further verification in Viper \cite{astrauskas_leveraging_2019}.
 
@@ -96,13 +96,14 @@ Prusti is getting actively maintained and improved with over 7000 commits since 
 
 Prusti is not feature-complete yet, there are about 200 issues in GitHub currently open \cite{eth_zurich_issues_2023}. Many of them are proposals for new features. About 200 issues have been closed already \cite{eth_zurich_issues_2023}.
 
-The Prusti development team has evaluated the tool in several ways: first, they successfully tested the automated core proof generation on 11,791 functions of the top 500 Rust crates of the year 2018 \cite{astrauskas_leveraging_2019}. Second, they identified 519 possible functions in those crates where theoretically an overflow or division by zero could happen, showing that 467 functions has some sort of problem, with the vast majority having an overflow or division by zero problem \cite{astrauskas_leveraging_2019}. Third, they took 16 examples for verifying panic and overflow freedom, while designing and applying specifications on 7 of them \cite{astrauskas_leveraging_2019}. Those 16 examples had a total amount of 471 lines of code, with a total investment of 389 lines of code for Prusti statements. 
+The Prusti development team has evaluated the tool in several ways: first, they successfully tested the automated core proof generation on 11,791 functions of the top 500 Rust crates of the year 2018 \cite{astrauskas_leveraging_2019}. Second, they identified 519 possible functions in those crates where theoretically an overflow or division by zero could happen, showing that 467 functions has some sort of problem, with the vast majority having an overflow or division by zero problem \cite{astrauskas_leveraging_2019}. Third, they took 16 examples for verifying panic and overflow freedom, while designing and applying specifications on 7 of them \cite{astrauskas_leveraging_2019}. Those 16 examples had a total amount of 471 lines of code, with a total investment of 389 lines of code for Prusti statements.
+
+Gijsberts has demonstrated that it is feasible to verify a key-value store with Prusti \cite{stef_gijsberts_prusti_2023}.
 
 \subsubsection{Scientific activity}
-% Zwei Hauptpaper: https://scholar.google.de/scholar?hl=en&as_sdt=0%2C5&q=Leveraging+Rust+Types+for+Modular+Specification+and+Verification&btnG=
-170 Cites,
-The prusti project: Formal verification for rust 17 Cites
+Prusti is quite popular in the Rust Verification community. For example, the tool has been presented at the first occurrence of the Rust Verification Workshop in 2021 \cite{peter_muller_eth_zurich_rust_2021}. This presentation is also featured on the official Rust YouTube channel \cite{alex_summers_prusti_2021}.
 
+The first paper \cite{astrauskas_leveraging_2019} which introduced Prusti has been cited around 150 times according to Google Scholar. Its successor \cite{deshmukh_prusti_2022} has been cited 17 times at the time of writing.
 
 \subsubsection{Documentation}
-
+Prusti has a dedicated user guide to demonstrate its capabilities and features a guided tour, though incomplete, to teach new users the usage of Prusti \cite{prusti_user_guide_introduction_2023}. Prusti also provides code examples in its two related papers \cite{deshmukh_prusti_2022, astrauskas_leveraging_2019} and its GitHub page \cite{eth_zurich_viperprojectprusti-dev_2023}.
