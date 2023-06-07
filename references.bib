@@ -1,4 +1,102 @@
 
+@online{xavier_denis_xldeniswhycode_2023,
+	title = {xldenis/whycode},
+	url = {https://github.com/xldenis/whycode},
+	abstract = {This repository contains an experiment in using {VsCode} as a front-end for the Why3 prover framework, rather than its hand-built {GTK} frontend.},
+	type = {{GitHub} Repository},
+	author = {{Xavier Denis}},
+	urldate = {2023-06-07},
+	date = {2023-06-07},
+	langid = {english},
+}
+
+@online{xavier_denis_xldeniscreusot_2023,
+	title = {xldenis/creusot: deductive verification of Rust code. (semi) automatically prove your code satisfies your specifications!},
+	rights = {{LGPL}-2.1 license},
+	url = {https://github.com/xldenis/creusot},
+	abstract = {deductive verification of Rust code. (semi) automatically prove your code satisfies your specifications!},
+	type = {{GitHub} Repository},
+	author = {{Xavier Denis}},
+	urldate = {2023-06-07},
+	date = {2023-06-07},
+	langid = {english},
+}
+
+@article{matsushita_rusthorn_2021,
+	title = {{RustHorn}: {CHC}-based Verification for Rust Programs},
+	volume = {43},
+	issn = {0164-0925},
+	url = {https://dl.acm.org/doi/10.1145/3462205},
+	doi = {10.1145/3462205},
+	shorttitle = {{RustHorn}},
+	abstract = {Reduction to satisfiability of constrained Horn clauses ({CHCs}) is a widely studied approach to automated program verification. Current {CHC}-based methods, however, do not work very well for pointer-manipulating programs, especially those with dynamic memory allocation. This article presents a novel reduction of pointer-manipulating Rust programs into {CHCs}, which clears away pointers and memory states by leveraging Rust’s guarantees on permission. We formalize our reduction for a simplified core of Rust and prove its soundness and completeness. We have implemented a prototype verifier for a subset of Rust and confirmed the effectiveness of our method.},
+	pages = {15:1--15:54},
+	number = {4},
+	journaltitle = {{ACM} Transactions on Programming Languages and Systems},
+	shortjournal = {{ACM} Trans. Program. Lang. Syst.},
+	author = {Matsushita, Yusuke and Tsukada, Takeshi and Kobayashi, Naoki},
+	urldate = {2023-06-07},
+	date = {2021-10-31},
+	keywords = {{CHC}, Rust, automated verification, ownership, permission, pointer},
+}
+
+@report{johannes_hayes_verifying_2023,
+	location = {Dresden},
+	title = {Verifying the Rust Runtime of Lingua Franca},
+	url = {https://grk2767.tu-dresden.de/files/Images/people/chair-cc/theses/2303_Hayess_MA.pdf},
+	shorttitle = {Verifying the Rust Runtime of Lingua Franca},
+	abstract = {Lingua Franca is a coordination language for writing applications with deterministic
+concurrency in various programming languages, including Rust. For enforcement of
+semantics, Lingua Franca programs rely on a runtime. In the Rust case, the runtime
+is written in the same language, which provides memory safety and data-race freedom.
+To further capitalise on these benefits, this work defines correctness properties for the
+Lingua Franca Rust runtime and attempts to verify them with the deductive verification
+tool Creusot. Beyond that, the work surveys the contemporary academic literature on
+Rust software verification and its tooling. Ultimately, the verification work is only a
+limited success due to Creusot’s lack of support for several Rust language features. The
+verification work required the extension of Creusot’s contract coverage of Rust’s standard
+library which was contributed back to the project. While full verification of the runtime
+failed, it was possible to verify the correctness of a custom map data type the runtime
+heavily relies on.},
+	pages = {75},
+	institution = {Technische Universität Dresden},
+	type = {Master Thesis},
+	author = {{Johannes Hayeß}},
+	urldate = {2023-06-06},
+	date = {2023-03-06},
+	langid = {english},
+}
+
+@report{denis_creusot_2021,
+	title = {The {CREUSOT} Environment for the Deductive Verification of Rust Programs},
+	url = {https://inria.hal.science/hal-03526634},
+	number = {{RR}-9448},
+	institution = {Inria Saclay - Île de France},
+	type = {Research Report},
+	author = {Denis, Xavier and Jourdan, Jacques-Henri and Marché, Claude},
+	date = {2021-12},
+	keywords = {Alias, Aliasing and Ownership, Deductive verification, Formal Specification, Langage de programmation Rust, Ownership, Prophecies, Prophéties, Rust programming language, Spécification formelle, Traits, Vérification Déductive},
+}
+
+@incollection{riesco_creusot_2022,
+	location = {Cham},
+	title = {Creusot: A Foundry for the Deductive Verification of Rust Programs},
+	volume = {13478},
+	isbn = {978-3-031-17243-4 978-3-031-17244-1},
+	url = {https://link.springer.com/10.1007/978-3-031-17244-1_6},
+	shorttitle = {Creusot},
+	pages = {90--105},
+	booktitle = {Formal Methods and Software Engineering},
+	publisher = {Springer International Publishing},
+	author = {Denis, Xavier and Jourdan, Jacques-Henri and Marché, Claude},
+	editor = {Riesco, Adrian and Zhang, Min},
+	urldate = {2023-06-06},
+	date = {2022},
+	langid = {english},
+	doi = {10.1007/978-3-031-17244-1\_6},
+	note = {Series Title: Lecture Notes in Computer Science},
+}
+
 @online{eth_zurich_prusti-devprusti-tests_2023,
 	title = {prusti-dev/prusti-tests at master · viperproject/prusti-dev · {GitHub}},
 	url = {https://github.com/viperproject/prusti-dev/tree/master/prusti-tests},
@@ -470,12 +568,6 @@ inputs.},
 	eprinttype = {arxiv},
 	eprint = {2010.16345 [cs]},
 	keywords = {Computer Science - Logic in Computer Science, Computer Science - Software Engineering, D.2.4, D.2.5, F.3.1, H.1.2},
-}
-
-@article{denis_creusot_nodate,
-	title = {Creusot: a Foundry for the Deductive Verification of Rust Programs},
-	author = {Denis, Xavier and Jourdan, Jacques-Henri and Marché, Claude},
-	langid = {english},
 }
 
 @misc{lattuada_verus_2023,
