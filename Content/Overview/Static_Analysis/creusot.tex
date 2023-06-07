@@ -1,1 +1,32 @@
 \subsection{Creusot}
+
+Creusot is a \textit{deductive} verification tool for Rust whose development has started in 2020. The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations; these theories have to be imported into Why3 and evaluated there \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al. \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with keywords \cite{xavier_denis_xldeniscreusot_2023}.
+
+\subsubsection{Usability}
+
+Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated MIR for its theory generation \cite{riesco_creusot_2022}. The automatically generated theories have to be manually imported into Why3, however there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
+From a developer standpoint, that results in additional effort and time required to generate the theories, import them into Why3 and evaluate them there. It also requires basic domain knowledge for formal verification and knowledge for using the Why3 ecosystem. 
+From a formal verification expert standpoint, it opens a broad field of customization for specific needs e.g. setting a different timeout for the SMT solver for one particular theory.
+The developer already has plans to improve this part of the process though, in form of a Visual Studio Code plugin which acts as a frontend for Why3 \cite{xavier_denis_xldeniswhycode_2023}.
+
+The annotations written in Pearlite are quite similar to those in Prusti as well, using the same Rust specific attributes style \cite{rust_foundation_attributes_nodate}. As can be seen, numbers have to converted into the desired datatype, as the default Pearlite number datatype is \textit{Int}, which is only present in the Pearlite context
+
+\begin{lstlisting}[language=Rust, caption=Example Rust code of a function with a pre- and postcondition for Creusot, label={lst:creusot_pre_postcondition}]
+#[requires(*val <= u32::MAX - 1u32)]
+#[ensures(^val == *val + 1u32)]
+fn incr(val: &mut u32) {
+    *val += 1;
+}
+\end{lstlisting}
+
+\subsubsection{Technology}
+WhyML, MLCFG, Why3 -> Interchangeable SMT solver
+\subsubsection{Feedback}
+% Why3 und Compile errors
+\subsubsection{Language support and verification conditions}
+% Safe Rust only
+\subsubsection{Development}
+\subsubsection{Activity}
+\subsubsection{Scientific activity}
+\subsubsection{Documentation}
+% Testsuite mit praktischen Beispielen vorhanden, 
