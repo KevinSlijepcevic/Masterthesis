@@ -10,9 +10,9 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: Thesis.tex
+          latexmk_use_lualatex: true
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
           name: PDF
           path: main.pdf
-          latexmk_use_lualatex: true
