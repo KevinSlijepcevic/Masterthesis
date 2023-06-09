@@ -9,9 +9,9 @@ From a developer standpoint, that results in additional effort and time required
 From a formal verification expert standpoint, it opens a broad field of customization for specific needs e.g. setting a different timeout for the SMT solver for one particular theory or using different proof tactics.
 It is planed to improve this part of the process though, in form of a Visual Studio Code plugin which acts as a frontend for Why3 \cite{xavier_denis_xldeniswhycode_2023}.
 
-The annotations written in Pearlite are quite similar to those in Prusti, using the same Rust specific attributes style \cite{rust_foundation_attributes_nodate}, as can be seen in \autoref{lst:creusot_pre_postcondition}. Note that numbers in the specifications have to be equipped with the desired datatype for arithmetic operations, as Creusot automatically infers them as a Pearlite specific \textit{Int} datatype. Also note the practical appliance of the prophecy logic, which is annotated by the \textsuperscript{$\wedge$} operator in the postcondition, which implies the final value of \textit{val}. 
+The annotations written in Pearlite are similar to those in Prusti, using the same Rust specific attributes style \cite{rust_foundation_attributes_nodate}, as can be seen in \autoref{lst:creusot_pre_postcondition}. Note that numbers in the specifications have to be equipped with the desired datatype for arithmetic operations, as Creusot automatically infers them as a Pearlite specific integer. Also note the practical appliance of the prophecy logic, which is annotated by the \textsuperscript{$\wedge$} operator in the postcondition, which implies the final value of \textit{val} and the * operator, which implies the current value of \textit{val} \cite{riesco_creusot_2022}.
 
-It is also possible to call functions inside of the specifications like for example predicates, marked with the \lstinline{#[predicate]} annotation. Predicates are typically functions expecting Pearlite data types, preventing them from being called outside of verification purposes \cite{riesco_creusot_2022}. However, it is also possible to design helper predicate functions with original Rust data types. 
+It is also possible to call functions inside of the specifications, marked with the \lstinline{#[predicate]} or \lstinline{#[logic]} annotation. Predicates are typically functions expecting Pearlite data types, preventing them from being called outside of verification purposes \cite{riesco_creusot_2022}. However, it is also possible to design helper predicate functions with original Rust data types. 
 
 \begin{lstlisting}[language=Rust, caption=Example Rust code of a function with a pre- and postcondition for Creusot, label={lst:creusot_pre_postcondition}]
 #[requires(*val <= u32::MAX - 1u32)]
@@ -24,14 +24,33 @@ fn incr(val: &mut u32) {
 \subsubsection{Technology}
 Creusot translates Rust Code with Pearlite annotations into the WhyML language, which is designed to be executed by Why3 \cite{riesco_creusot_2022}. To represent the unstructured nature of the generated MIR, a WhyML language extension called \textit{MLCFG} is used by Creusot \cite{riesco_creusot_2022,the_why3_development_team_7_2023}. The tool therefore uses first-order logic for its reasoning \cite{riesco_creusot_2022}.
 
-Creusot relies on Rust's borrow checker, it does not create core proofs like Prusti for example (see Chapter \ref{cap:prusti_language_verification}) \cite{riesco_creusot_2022}. The authors believe that this significantly reduces verification time effort, compared to Prusti \cite{riesco_creusot_2022}.
+Creusot relies on Rust's borrow checker, it does not create core proofs like Prusti for example (see Chapter \ref{cap:prusti_language_verification}) \cite{riesco_creusot_2022}. The authors believe that omitting this significantly reduces verification time effort, compared to Prusti \cite{riesco_creusot_2022}. 
 
-Due to the usage of Why3 for proofing the generated theories, the tool relies on a well-known and well-tested verification platform. Why3 supports a wide variety of automatic provers, like for example CVC3, CVC4, Z3, Alt-Ergo and interactive provers like Coq or Isabelle \cite{why3_why3_2023}. 
+Due to the usage of Why3 for proofing the generated theories, the tool relies on a well-known and well-tested verification platform \cite{riesco_creusot_2022}. Why3 supports a wide variety of automatic provers, like CVC3, CVC4, Z3, Alt-Ergo and interactive provers like Coq or Isabelle \cite{why3_why3_2023}. 
 
 \subsubsection{Feedback}
-% Why3 und Compile errors
-\subsubsection{Language support and verification conditions}
-% Safe Rust only, gibt auch #trusted für externe calls(?), used 
+Due to Creusot's integration into the Rust compiler, error messages regarding the Pearlite syntax are presented like regular Rust errors. Because Creusot does not perform actual reasoning by itself though, logic errors in the specification are not reported through the Rust compiler. Instead, the user has to interpret the resulting Why3 behaviour, which adds a layer of abstraction over the verification process and can make the user experience challenging, especially for beginners. However, if the user possess advanced experience in the operation of the Why3 verification framework, this process can provide more detailed results.
+
+\subsubsection{Language Support and Verification Conditions}
+Creusot can only process safe Rust code \cite{riesco_creusot_2022}. Unsafe Rust code can be encapsulated by a safe abstraction layer, which can be marked as trusted \cite{riesco_creusot_2022}. Creusot makes use of this technique by shipping a, with annotations retrofitted, subset of Rust's standard library with the tool \cite{denis_creusot_2021}.
+
+Creusot supports a wide variety of the Rust syntax like traits, structs, enums, borrowing, loops and recursive function calls \cite{denis_creusot_2021}.
+
+Creusot supports access to models of data structures \cite{denis_creusot_2021}. For example, the Vec<T> data structure can be viewed as a mathematical sequence of values (Seq<T>) \cite{denis_creusot_2021}. It is possible to design models for custom data structures, implementing the \lstinline{Model} trait \cite{denis_creusot_2021}.
+
+Creusot leverages prophecies into modelling mutable borrows. It enables the tool to access the final value of a mutable borrow. This functionality can be compared to Prusti's pledges (see Chapter \ref{cap:prusti_language_verification} \cite{denis_creusot_2021,riesco_creusot_2022}). The distinction is based on the consideration of time: Prusti's pledges are checked at the end of the mutable borrows lifetime, while Creusot specifies the future values of a mutable borrow \cite{denis_creusot_2021}.
+
+Creusot supports ghost types, which only exist during verification, which can be used to store the state of a value before reaching a loop for example \cite{riesco_creusot_2022}.
+
+Additonally, Creusot supports
+\begin{itemize}
+    \item Pre- and postconditions \cite{riesco_creusot_2022}
+    \item Predicates, quantifiers, loop invariants and variants, implications \cite{riesco_creusot_2022}
+    \item User specific lemmas \cite{riesco_creusot_2022}
+    \item Logical equality \cite{riesco_creusot_2022}
+    \item Inline assertions
+\end{itemize}
+
 \subsubsection{Development}
 \subsubsection{Activity}
 \subsubsection{Scientific activity}
