@@ -1,10 +1,10 @@
 \subsection{Creusot}
 
-Creusot is a \textit{deductive} verification tool for Rust whose development has started in 2020. The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations; these theories have to be imported into Why3 and evaluated there \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al. \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with keywords and contains additional mathematical data types like Seq<T> and Int \cite{xavier_denis_xldeniscreusot_2023,riesco_creusot_2022}.
+Creusot is a \textit{deductive} verification tool for Rust whose development has started in October of 2020\footnote{According to the tool's corresponding GitHub log \cite{xavier_denis_initial_2020}}. The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations; these theories have to be imported into Why3 and evaluated there \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al., in a project called \textit{RustHorn} \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with logical expressions \cite{xavier_denis_xldeniscreusot_2023,riesco_creusot_2022}.
 
 \subsubsection{Usability}
 
-Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated MIR for its theory generation \cite{riesco_creusot_2022}. The automatically generated theories produces from Creusot have to be manually imported into Why3, although there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
+Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated MIR for its theory generation \cite{riesco_creusot_2022}. It can also be used via cargo \cite{denis_creusot_2021} The automatically generated theories produces from Creusot have to be manually imported into Why3, although there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
 From a developer standpoint, that results in additional effort and time required to import the generated theories into Why3 and evaluate them there. It also requires domain knowledge for formal verification and for using the Why3 ecosystem. 
 From a formal verification expert standpoint, it opens a broad field of customization for specific needs e.g. setting a different timeout for the SMT solver for one particular theory or using different proof tactics.
 It is planed to improve this part of the process though, in form of a Visual Studio Code plugin which acts as a frontend for Why3 \cite{xavier_denis_xldeniswhycode_2023}.
@@ -36,13 +36,13 @@ Creusot can only process safe Rust code \cite{riesco_creusot_2022}. Unsafe Rust 
 
 Creusot supports a wide variety of the Rust syntax like traits, structs, enums, borrowing, loops and recursive function calls \cite{denis_creusot_2021}.
 
-Creusot supports access to models of data structures \cite{denis_creusot_2021}. For example, the Vec<T> data structure can be viewed as a mathematical sequence of values (Seq<T>) \cite{denis_creusot_2021}. It is possible to design models for custom data structures, implementing the \lstinline{Model} trait \cite{denis_creusot_2021}.
+Creusot supports access to models of data structures \cite{denis_creusot_2021}. For example, the Vec<T> data structure can be viewed as a mathematical sequence of values (Seq<T>) \cite{denis_creusot_2021}. It is possible to design models for custom data structures, implementing the \lstinline{Model} trait \cite{denis_creusot_2021,xavier_denis_xldeniscreusot_2023}.
 
 Creusot leverages prophecies into modelling mutable borrows. It enables the tool to access the final value of a mutable borrow. This functionality can be compared to Prusti's pledges (see Chapter \ref{cap:prusti_language_verification} \cite{denis_creusot_2021,riesco_creusot_2022}). The distinction is based on the consideration of time: Prusti's pledges are checked at the end of the mutable borrows lifetime, while Creusot specifies the future values of a mutable borrow \cite{denis_creusot_2021}.
 
 Creusot supports ghost types, which only exist during verification, which can be used to store the state of a value before reaching a loop for example \cite{riesco_creusot_2022}.
 
-Additonally, Creusot supports
+Additionally, Creusot has support for
 \begin{itemize}
     \item Pre- and postconditions \cite{riesco_creusot_2022}
     \item Predicates, quantifiers, loop invariants and variants, implications \cite{riesco_creusot_2022}
@@ -52,7 +52,23 @@ Additonally, Creusot supports
 \end{itemize}
 
 \subsubsection{Development}
+Creusot has been developed as a research software \cite{xavier_denis_xldeniscreusot_2023} alongside the publication \textit{The CREUSOT Environment for the Deductive Verification of Rust Programs} \cite{denis_creusot_2021}. The three authors of both publications about Creusot \cite{denis_creusot_2021,riesco_creusot_2022} Xavier Denis, Jacques-Henri Jourdan and Claude Marché are from the Université Paris-Saclay in France.
+
 \subsubsection{Activity}
+Creusot is being actively maintained with over 1,500 commits in the main branch since 2020 \cite{xavier_denis_xldeniscreusot_2023}.
+
+Creusot doesn't mention any feature-completion or the lack of it in it's complementary literature. There are currently about 80 issues open in GitHub, about 10 of them marked as \textit{enhancements} and about 190 issues have been closed \cite{xavier_denis_issues_2023}.
+
+The developers have evaluated Creusot with 16 example programs \cite{riesco_creusot_2022}. Those examples had a total amount of 336 lines of code, with a total investment of 534 lines of code for Creusot annotations \cite{riesco_creusot_2022}. 
+
+Creusot has been used to verify CreuSAT, a SAT solver written in Rust \cite{skotam_creusat_2022}. Additionally, it has been used to verify parts of the Rust runtime for Lingua Franca, a polyglot coordination language \cite{johannes_hayes_verifying_2023}.
+
 \subsubsection{Scientific activity}
+Creusot has been presented at the 2021 and 2022 occurrence of the Rust Verification Workshop \cite{peter_muller_rust_2021,peter_muller_rust_2022}. It has also been featured on the official Rust YouTube channel \cite{rust_creusot_2021}. 
+
+The first paper \cite{denis_creusot_2021} which introduced Creusot has been cited 14 times according to Google Scholar. Its successor \cite{riesco_creusot_2022} has been cited 11 times at the time of writing.
+
 \subsubsection{Documentation}
-% Testsuite mit praktischen Beispielen vorhanden, 
+Creusot does not feature a full documentation of all it's capabilities or a dedicated user guide. However, it provides a basic overview of common Creusot annotations and example Rust code with annotations \cite{xavier_denis_xldeniscreusot_2023}. 
+
+Creusot ships with test code, which contains functional and non-functional code examples \cite{xavier_denis_creusotcreusottests_2023}. 

@@ -1,6 +1,6 @@
 \subsection{Prusti}
 
-Prusti is a verification framework whose development has started in 2017 at the ETH Zurich \cite{astrauskas_leveraging_2019,deshmukh_prusti_2022}. It leverages Rust's type system while providing a specification language, which can be used to describe certain properties of the program for verifying \cite{astrauskas_leveraging_2019}. This verifying process is automated by translating the Rust program and specifications into the Viper \cite{jobstmann_viper_2016} intermediate language, which is used for reasoning \cite{astrauskas_leveraging_2019}. There were three main goals while designing Prusti:
+Prusti is a verification framework whose development has started in December of 2017\footnote{According to the tool's corresponding GitHub log \cite{eth_zurich_initial_2017}} at the ETH Zurich \cite{astrauskas_leveraging_2019,deshmukh_prusti_2022}. It leverages Rust's type system while providing a specification language, which can be used to describe certain properties of the program for verifying \cite{astrauskas_leveraging_2019}. This verifying process is automated by translating the Rust program and specifications into the Viper \cite{jobstmann_viper_2016} intermediate language, which is used for reasoning \cite{astrauskas_leveraging_2019}. There were three main goals while designing Prusti:
 
 \begin{itemize}
     \item Provide functional correctness properties for Rust programs, without depending on Rust's safety guarantees \cite{deshmukh_prusti_2022}.
@@ -69,7 +69,7 @@ Prusti currently only supports the safe Rust dialect. Support for the unsafe par
 
 Prusti supports designing pre- and postconditions for functions, in a \textit{contract} like manner \cite{deshmukh_prusti_2022, astrauskas_leveraging_2019}. It is possible to call \textit{pure} Rust functions in those conditions, as well as calling \textit{predicates} \cite{prusti_user_guide_predicates_2023}, which have been designed with the \lstinline{predicate!()} macro \cite{deshmukh_prusti_2022}. Those predicates can be equipped with quantifiers \cite{deshmukh_prusti_2022}. 
 
-A key Prusti feature is the support of so called \textit{pledges} \cite{astrauskas_leveraging_2019}. Pledges are used to design specifications for values, which get returned as a reborrow from a function call. With the keywords \textit{before\_expiry} and \textit{after\_expiry}, it is possible to define properties before or after the borrow ends, respectively \cite{prusti_user_guide_pledges_2023}.
+An advanced Prusti feature is the support of so called \textit{pledges} \cite{astrauskas_leveraging_2019}. Pledges are used to design specifications for values, which get returned as a reborrow from a function call. With the keywords \textit{before\_expiry} and \textit{after\_expiry}, it is possible to define properties before or after the borrow ends, respectively \cite{prusti_user_guide_pledges_2023}.
 
 Prusti has support for external specifications. This is necessary for function calls to libraries such as the Rust Standard Library, because they don't include any specifications for Prusti. With external specifications, it is possible to extend those function calls with pre- and postconditions and enable Prusti to reason about those calls \cite{deshmukh_prusti_2022,prusti_user_guide_external_2023}. 
 
@@ -89,7 +89,7 @@ Additionally, Prusti has support for
 Prusti has been developed at the ETH Zurich as a proof-of-concept alongside the publication \textit{Leveraging Rust Types for Modular Specification and Verification} \cite{astrauskas_leveraging_2019}. The Swiss National Science Foundation, Facebook and Amazon Web Services are funding the project \cite{eth_zurich_prusti_2023}. The current projects members from the ETH Zurich are Vytautas Astrauskas, Aurel Bílý, Jonas Fiala, Peter Müller and Federico Poli \cite{eth_zurich_prusti_2023}. Further members are Christoph Matheja from the DTU Copenhagen and Alex Summers from the UBC in Vancouver, Canada \cite{eth_zurich_prusti_2023}.
 
 \subsubsection{Activity}
-Prusti is getting actively maintained and improved with over 7,000 commits since 2017 \cite{eth_zurich_viperprojectprusti-dev_2023}. Its latest stable release was in January of 2023, the latest nightly pre-release in May of 2023 \cite{eth_zurich_releases_2023}. 
+Prusti is being actively maintained and improved with over 7,000 commits in the main branch since 2017 \cite{eth_zurich_viperprojectprusti-dev_2023}. Its latest stable release was in January of 2023, the latest nightly pre-release in May of 2023 \cite{eth_zurich_releases_2023}. 
 
 Prusti is not feature-complete yet; there are about 200 issues in GitHub currently open \cite{eth_zurich_issues_2023}. Many of them are proposals for new features. About 200 issues have been closed already \cite{eth_zurich_issues_2023}.
 
@@ -98,9 +98,9 @@ The Prusti development team has evaluated the tool in several ways: first, they 
 Gijsberts has demonstrated that it is feasible to verify a key-value store with Prusti \cite{stef_gijsberts_prusti_2023}.
 
 \subsubsection{Scientific activity}
-Prusti is quite popular in the Rust verification community. For example, the tool has been presented at the first occurrence of the Rust Verification Workshop in 2021 \cite{peter_muller_eth_zurich_rust_2021}. This presentation is also featured on the official Rust YouTube channel \cite{alex_summers_prusti_2021}.
+Prusti has been presented at the first occurrence of the Rust Verification Workshop in 2021 \cite{peter_muller_eth_zurich_rust_2021}. This presentation is also featured on the official Rust YouTube channel \cite{alex_summers_prusti_2021}.
 
-The first paper \cite{astrauskas_leveraging_2019} which introduced Prusti has been cited around 150 times according to Google Scholar. Its successor \cite{deshmukh_prusti_2022} has been cited 17 times at the time of writing.
+The first paper \cite{astrauskas_leveraging_2019} which introduced Prusti has been cited around 150 times according to Google Scholar. Its successor \cite{deshmukh_prusti_2022} has been cited 17 times at time of writing.
 
 \subsubsection{Documentation}
 Prusti has a dedicated user guide to demonstrate its capabilities and provides a guided tour, though incomplete, to teach new users the usage of Prusti \cite{prusti_user_guide_introduction_2023}. Prusti also provides code examples in its two related papers \cite{deshmukh_prusti_2022, astrauskas_leveraging_2019} and its GitHub page \cite{eth_zurich_viperprojectprusti-dev_2023}.
