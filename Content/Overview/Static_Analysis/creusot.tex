@@ -4,7 +4,7 @@ Creusot is a \textit{deductive} verification tool for Rust whose development has
 
 \subsubsection{Usability}
 
-Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated MIR for its theory generation \cite{riesco_creusot_2022}. The tool has to be used via a cargo wrapper \cite{denis_creusot_2021}. The automatically generated theories produces from Creusot have to be manually imported into Why3, although there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
+Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated \acs{mir} for its theory generation \cite{riesco_creusot_2022}. The tool has to be used via a cargo wrapper \cite{denis_creusot_2021}. The automatically generated theories produces from Creusot have to be manually imported into Why3, although there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
 From a developer standpoint, that results in additional effort and time required to import the generated theories into Why3 and evaluate them there. It also requires domain knowledge for formal verification and for using the Why3 ecosystem. 
 From a formal verification expert standpoint, it opens a broad field of customization for specific needs e.g. setting a different timeout for the SMT solver for one particular theory or using different proof tactics.
 It is planed to improve this part of the process though, in form of a Visual Studio Code plugin which acts as a frontend for Why3 \cite{xavier_denis_xldeniswhycode_2023}.

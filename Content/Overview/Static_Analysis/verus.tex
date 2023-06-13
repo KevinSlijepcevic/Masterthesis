@@ -1,0 +1,29 @@
+\subsection{Verus}
+
+Verus is a SMT-based tool for verification for Rust-like code \cite{lattuada_verus_2023,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich \cite{lattuada_verus_2023}.
+The Rust-like code Verus requires is split into three modes: \textit{specification} mode, in which specifications functions are declared. Those are not borrow checked and represent functional designed ghost code, as they are translated directly into SMT solver instructions \cite{lattuada_verus_2023}. The second mode is the \textit{proof} mode, in which proof functions are declared, for example user-specific lemmas \cite{lattuada_verus_2023}. Those functions are borrow checked and also ghost code; they can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}. The third mode is the \textit{exec} mode, which contains functions that are compiled to machine code by the Rust compiler, inclusive the guarantees standard Rust promises. In this mode, specification and proof functions can be called and the functions can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}.
+
+The tool features fully automatically verification and translates the to be verified code into SMT solver instructions for the SMT solver Z3. The tool has been inspired by projects like Dafny, Boogie, Prusti (see Chapter \ref{cap:prusti}), Coq and more \cite{verus-lang_goals_2023}. There were several goals for designing Verus:
+
+\begin{itemize}
+    \item Provide a mathematical language for designing specifications and proofs \cite{lattuada_verus_2023}
+    \item Provide a imperative language for designing executable code \cite{lattuada_verus_2023}
+    \item Generate small and simple verification conditions for the SMT solver \cite{lattuada_verus_2023}
+\end{itemize}
+
+Note that the syntax for Verus specific annotations mentioned in the complementary paper \cite{lattuada_verus_2023} is outdated, as it has been overhauled in the meantime \cite{chris_hawblitzel_doc_2023}. 
+
+\subsubsection{Usability}
+
+% Bei Beispielcode kein += weil Verus damit noch nicht umgehen kann
+
+%IDE Support evtl auch vorhanden halbwegs, https://verus-lang.github.io/verus/guide/ide_support.html
+\subsubsection{Technology}
+%Does not create core proofs
+\subsubsection{Feedback}
+\subsubsection{Language Support and Verification Conditions}
+%Overflow/Underflow, assert/assume, #[verifier(external_body)], Quanttifiers, Loop invariants
+\subsubsection{Development}
+\subsubsection{Activity}
+\subsubsection{Scientific activity}
+\subsubsection{Documentation}
