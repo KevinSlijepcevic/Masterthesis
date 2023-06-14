@@ -1,7 +1,6 @@
 \subsection{Verus}
 
 Verus is a SMT-based tool for verification for Rust-like code \cite{lattuada_verus_2023,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich \cite{lattuada_verus_2023}.
-The Rust-like code Verus requires is split into three modes: \textit{specification} mode, in which specifications functions are declared. Those are not borrow checked and represent functional designed ghost code, as they are translated directly into SMT solver instructions \cite{lattuada_verus_2023}. The second mode is the \textit{proof} mode, in which proof functions are declared, for example user-specific lemmas \cite{lattuada_verus_2023}. Those functions are borrow checked and also ghost code; they can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}. The third mode is the \textit{exec} mode, which contains functions that are compiled to machine code by the Rust compiler, inclusive the guarantees standard Rust promises. In this mode, specification and proof functions can be called and the functions can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}.
 
 The tool features fully automatically verification and translates the to be verified code into SMT solver instructions for the SMT solver Z3. The tool has been inspired by projects like Dafny, Boogie, Prusti (see Chapter \ref{cap:prusti}), Coq and more \cite{verus-lang_goals_2023}. There were several goals for designing Verus:
 
@@ -15,11 +14,30 @@ Note that the syntax for Verus specific annotations mentioned in the complementa
 
 \subsubsection{Usability}
 
-% Bei Beispielcode kein += weil Verus damit noch nicht umgehen kann
+Like Prusti and Creusot (see Chapter \ref{cap:prusti_usability} and \ref{cap:creusot_usability}, respectively), Verus integrates itself into the Rust compiler. In a previous version of Verus, the tool has leveraged a forked version of the rustc compiler \cite{lattuada_verus_2023}. This has been changed recently, and Verus now integrates itself into the default Rust compiler \cite{andrea_lattuada_port_2023}.
 
-%IDE Support evtl auch vorhanden halbwegs, https://verus-lang.github.io/verus/guide/ide_support.html
+Verus is fully autonomous. In contrast to Prusti and Creusot, Verus uses the from the Rust-like code generated \acs{hir} as its foundation for reasoning \cite{chris_hawblitzel_verussourcecodemd_2021}. Verus converts the \acs{hir} into instructions for the SMT solver Z3, which then executes them and returns those results back to the user.
+
+The Rust-like code Verus requires is split into three modes: \textit{specification} mode, in which specifications functions are declared. Those are not borrow checked and represent functional designed ghost code, as they are translated directly into SMT solver instructions \cite{lattuada_verus_2023}. The second mode is the \textit{proof} mode, in which proof functions are declared, for example user-specific lemmas \cite{lattuada_verus_2023}. Those functions are borrow checked and also ghost code; they can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}. The third mode is the \textit{exec} mode, which contains functions that are compiled to machine code by the Rust compiler, inclusive the guarantees standard Rust promises. In this mode, specification and proof functions can be called and the functions can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}, as can be seen in \autoref{lst:verus_pre_postcondition}.
+
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition for Verus, label={lst:verus_pre_postcondition}]
+    exec fn incr(val: &mut u32)
+        requires
+            *old(val) <= u32::MAX - 1
+        ensures
+            *val == *old(val) + 1
+    {
+        *val = *val + 1;
+    }
+\end{lstlisting}
+
+Verus code is encapsulated inside a \lstinline{verus!} macro. Because this macro is foreign to most IDEs, syntax highlighting and suggestions are not functional. To resolve this limitation, Verus syntax support can be added \cite{verus-lang_getting_2023} to \textit{rust-analyzer}, an language server protocol implementation for Rust, which can be used in various IDEs like Visual Studio Code or Emacs \cite{rust_analyzer_user_2023}.
+
 \subsubsection{Technology}
 %Does not create core proofs
+
+% https://github.com/verus-lang/verus/blob/main/source/CODE.md
+
 \subsubsection{Feedback}
 \subsubsection{Language Support and Verification Conditions}
 %Overflow/Underflow, assert/assume, #[verifier(external_body)], Quanttifiers, Loop invariants

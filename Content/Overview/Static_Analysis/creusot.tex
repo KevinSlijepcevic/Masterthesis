@@ -1,8 +1,10 @@
 \subsection{Creusot}
+\label{cap:creusot}
 
 Creusot is a \textit{deductive} verification tool for Rust whose development has started in October of 2020\footnote{According to the tool's corresponding GitHub log \cite{xavier_denis_initial_2020}}. The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations. These theories have to be imported into Why3 and evaluated there, either with the GUI or CLI version \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al., in a project called \textit{RustHorn} \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with logical expressions \cite{xavier_denis_xldeniscreusot_2023,riesco_creusot_2022}.
 
 \subsubsection{Usability}
+\label{cap:creusot_usability}
 
 Like Prusti (refer to Chapter \ref{cap:prusti_usability}), Creusot integrates itself into the Rust compiler and uses the generated \acs{mir} for its theory generation \cite{riesco_creusot_2022}. The tool has to be used via a cargo wrapper \cite{denis_creusot_2021}. The automatically generated theories produces from Creusot have to be manually imported into Why3, although there exists a convenient wrapper for that purpose \cite{riesco_creusot_2022, xavier_denis_xldeniscreusot_2023}.
 From a developer standpoint, that results in additional effort and time required to import the generated theories into Why3 and evaluate them there. It also requires domain knowledge for formal verification and for using the Why3 ecosystem. 
@@ -13,7 +15,7 @@ The annotations written in Pearlite are similar to those in Prusti, using the sa
 
 It is possible to call functions inside of the specifications, marked with the \lstinline{#[predicate]} or \lstinline{#[logic]} annotation \cite{riesco_creusot_2022}. Predicates are propositions, which must return a boolean value \cite{xavier_denis_xldeniscreusot_2023}. Logics can contain any logical operations such as quantifiers and can only be used during verification, as the body of the function is replaced with the \lstinline{panic!} macro during normal runtime \cite{xavier_denis_xldeniscreusot_2023}.
 
-\begin{lstlisting}[language=Rust, caption=Example Rust code of a function with a pre- and postcondition for Creusot, label={lst:creusot_pre_postcondition}]
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition for Creusot, label={lst:creusot_pre_postcondition}]
 #[requires(*val <= u32::MAX - 1u32)]
 #[ensures(^val == *val + 1u32)]
 fn incr(val: &mut u32) {
