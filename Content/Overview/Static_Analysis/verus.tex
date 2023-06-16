@@ -34,14 +34,37 @@ The Rust-like code Verus requires is split into three modes: \textit{specificati
 Verus code is encapsulated inside a \lstinline{verus!} macro. Because this macro is foreign to most IDEs, syntax highlighting and suggestions are not functional. To resolve this limitation, Verus syntax support can be added \cite{verus-lang_getting_2023} to \textit{rust-analyzer}, an language server protocol implementation for Rust, which can be used in various IDEs like Visual Studio Code or Emacs \cite{rust_analyzer_user_2023}.
 
 \subsubsection{Technology}
-Verus translates the Rust-like code into instructions for the Z3 SMT solver\cite{lattuada_verus_2023}, based on the generated \acs{hir} from the Rust compiler \cite{chris_hawblitzel_verussourcecodemd_2021}. Functions written in specification mode are directly translated to SMT function calls, as Verus aims to provide lightweight verification condition encoding \cite{lattuada_verus_2023}. As a result, specification functions cannot be equipped with pre- and postconditions \cite{lattuada_verus_2023}. To support the user, Verus allows to equip those functions with \textit{soft} preconditions, annotated with \lstinline{recommends}, which Verus only invokes if there is a verification error \cite{lattuada_verus_2023}. 
+Verus translates the Rust-like code into instructions for the Z3 SMT solver \cite{lattuada_verus_2023}, based on the generated \acs{hir} from the Rust compiler \cite{chris_hawblitzel_verussourcecodemd_2021}. Functions written in specification mode are directly translated to SMT function calls, as Verus aims to provide lightweight verification condition encoding \cite{lattuada_verus_2023}. As a result, specification functions cannot be equipped with pre- and postconditions \cite{lattuada_verus_2023}. To support the user, Verus allows to equip those functions with \textit{soft} preconditions, annotated with \lstinline{recommends}, which Verus only invokes if there is a verification error \cite{lattuada_verus_2023}. 
 
 Verus relies on Rust's borrow checker, comparable to Creusot (see Chapter \ref{cap:creusot_technology}) \cite{lattuada_verus_2023}. The tool does not create additional theories for Z3 to check the guarantees Rust promises. This is apparent in the way Verus encodes mutable references: Mutable references are encoded to Z3 as immutable values, one assignment per mutation \cite{lattuada_verus_2023}. 
 
 \subsubsection{Feedback}
+Due to Verus's integration into the Rust compiler, error messages regarding the syntax or verification errors are displayed like regular Rust errors, similar to Prusti's behaviour (see Chapter \ref{cap:prusti_feedback}). As can be seen in \autoref{lst:verus_wrong_postcondition}, Verus marks the postcondition which is not satisfied, but it is not capable to exactly pinpoint the operation in the body of the function, which causes the error.
+
+\begin{lstlisting}[float, language=Rust, caption=Example output of a verification error in Verus, label={lst:verus_wrong_postcondition}]
+error: postcondition not satisfied
+  --> src/main.rs:9:5
+   |
+8  |               *val == *old(val) + 2
+   |               - failed this postcondition
+9  | /     {
+10 | |         *val = *val + 1;
+11 | |     }
+   | |_____^ at the end of the function body
+
+error: aborting due to previous error
+
+verification results:: verified: 1 errors: 1
+\end{lstlisting}
+
 \subsubsection{Language Support and Verification Conditions}
-%Overflow/Underflow, assert/assume, #[verifier(external_body)], Quanttifiers, Loop invariants, inline smt solver parameters, kein unsafe aber abstractions (interior mutability, heap pointers, concurrent data), spec/proof functions nur valid wenn sie terminieren; decrease clause
+%Overflow/Underflow, assert/assume, #[verifier(external_body)], Quanttifiers, Loop invariants, inline smt solver parameters, kein unsafe aber abstractions (interior mutability, heap pointers, concurrent data), spec/proof functions nur valid wenn sie terminieren; decrease clause, keine return mutable borrows (soll bald gefixt werden)
+% Auch noch user manual prüfen was da noch drinnen ist
 \subsubsection{Development}
+% ETH Zuruch und UMCB
 \subsubsection{Activity}
+%Evaluierung vorhanden, Beispielcode in Complementary matrial (allerdings alte syntax)
+% Keine praktische Anwendung/Paper gefunden
 \subsubsection{Scientific activity}
+%https://scholar.google.de/scholar?hl=en&as_sdt=0%2C5&q=Verus%3A+Verifying+Rust+Programs+using+Linear+Ghost+Types&btnG=
 \subsubsection{Documentation}
