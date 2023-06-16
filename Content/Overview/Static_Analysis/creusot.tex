@@ -24,6 +24,7 @@ fn incr(val: &mut u32) {
 \end{lstlisting}
 
 \subsubsection{Technology}
+\label{cap:creusot_technology}
 Creusot translates Rust code including annotations into the WhyML language, which is designed to be executed by Why3 \cite{riesco_creusot_2022}. To represent the unstructured nature of the generated \acs{mir}, a WhyML language extension called \textit{MLCFG} is used by Creusot \cite{riesco_creusot_2022,the_why3_development_team_7_2023}. The tool therefore uses first-order logic for its reasoning \cite{riesco_creusot_2022}.
 
 Creusot relies on Rust's borrow checker, it does not create core proofs like Prusti for example (see Chapter \ref{cap:prusti_language_verification}) \cite{riesco_creusot_2022}. The authors believe that omitting this procedure significantly reduces verification time effort, compared to Prusti \cite{riesco_creusot_2022}. 
