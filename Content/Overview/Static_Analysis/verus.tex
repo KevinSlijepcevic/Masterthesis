@@ -1,24 +1,24 @@
 \subsection{Verus}
 
-Verus is a SMT-based tool for verification for \textit{Rust-like} code \cite{lattuada_verus_2023,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich \cite{lattuada_verus_2023}.
+Verus is a SMT-based tool for verification for \textit{Rust-like} code \cite{lattuada_verus_2023-1,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich \cite{lattuada_verus_2023-1}.
 
 The tool features fully automatically verification and translates the to be verified code into SMT solver instructions for the SMT solver Z3. The tool has been inspired by projects like Dafny, Boogie, Prusti (see Chapter \ref{cap:prusti}), Coq and more \cite{verus-lang_goals_2023}. There were several goals for designing Verus:
 
 \begin{itemize}
-    \item Provide a mathematical language for designing specifications and proofs \cite{lattuada_verus_2023}
-    \item Provide a imperative language for designing executable code \cite{lattuada_verus_2023}
-    \item Generate small and simple verification conditions for the SMT solver \cite{lattuada_verus_2023}
+    \item Provide a mathematical language for designing specifications and proofs \cite{lattuada_verus_2023-1}
+    \item Provide a imperative language for designing executable code \cite{lattuada_verus_2023-1}
+    \item Generate small and simple verification conditions for the SMT solver \cite{lattuada_verus_2023-1}
 \end{itemize}
 
-Note that the syntax for Verus specific annotations mentioned in the complementary paper \cite{lattuada_verus_2023} is outdated, as it has been overhauled in the meantime \cite{chris_hawblitzel_doc_2023}. 
+Note that the syntax for Verus specific annotations mentioned in the complementary paper \cite{lattuada_verus_2023-1} is outdated, as it has been overhauled in the meantime \cite{chris_hawblitzel_doc_2023}. 
 
 \subsubsection{Usability}
 
-Like Prusti and Creusot (see Chapter \ref{cap:prusti_usability} and \ref{cap:creusot_usability}, respectively), Verus integrates itself into the Rust compiler. In a previous version of Verus, the tool has leveraged a forked version of the rustc compiler \cite{lattuada_verus_2023}. This has been changed recently, and Verus now integrates itself into the default Rust compiler \cite{andrea_lattuada_port_2023}.
+Like Prusti and Creusot (see Chapter \ref{cap:prusti_usability} and \ref{cap:creusot_usability}, respectively), Verus integrates itself into the Rust compiler. In a previous version of Verus, the tool has leveraged a forked version of the rustc compiler \cite{lattuada_verus_2023-1}. This has been changed recently, and Verus now integrates itself into the default Rust compiler \cite{andrea_lattuada_port_2023}.
 
 Verus is fully autonomous. In contrast to Prusti and Creusot, Verus uses the from the Rust-like code generated \acs{hir} as its foundation for reasoning \cite{chris_hawblitzel_verussourcecodemd_2021}. Verus converts the \acs{hir} into instructions for the SMT solver Z3, which then executes them and returns those results back to the user.
 
-The Rust-like code Verus requires is split into three modes: \textit{specification} mode, in which specifications functions are declared. Those are not borrow checked and represent functional designed ghost code, as they are translated directly into SMT solver instructions \cite{lattuada_verus_2023}. The second mode is the \textit{proof} mode, in which proof functions are declared, for example user-specific lemmas \cite{lattuada_verus_2023}. Those functions are borrow checked and also ghost code; they can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}. The third mode is the \textit{exec} mode, which contains functions that are compiled to machine code by the Rust compiler, inclusive the guarantees standard Rust promises. In this mode, specification and proof functions can be called and the functions can also be equipped with pre- and postconditions \cite{lattuada_verus_2023}, as can be seen in \autoref{lst:verus_pre_postcondition}.
+The Rust-like code Verus requires is split into three modes: \textit{specification} mode, in which specifications functions are declared. Those are not borrow checked and represent functional designed ghost code, as they are translated directly into SMT solver instructions \cite{lattuada_verus_2023-1}. The second mode is the \textit{proof} mode, in which proof functions are declared, for example user-specific lemmas \cite{lattuada_verus_2023-1}. Those functions are borrow checked and also ghost code; they can also be equipped with pre- and postconditions \cite{lattuada_verus_2023-1}. The third mode is the \textit{exec} mode, which contains functions that are compiled to machine code by the Rust compiler, inclusive the guarantees standard Rust promises. In this mode, specification and proof functions can be called and the functions can also be equipped with pre- and postconditions \cite{lattuada_verus_2023-1}, as can be seen in \autoref{lst:verus_pre_postcondition}.
 
 \begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition for Verus, label={lst:verus_pre_postcondition}]
     exec fn incr(val: &mut u32)
@@ -34,9 +34,9 @@ The Rust-like code Verus requires is split into three modes: \textit{specificati
 Verus code is encapsulated inside a \lstinline{verus!} macro. Because this macro is foreign to most IDEs, syntax highlighting and suggestions are not functional. To resolve this limitation, Verus syntax support can be added \cite{verus-lang_getting_2023} to \textit{rust-analyzer}, an language server protocol implementation for Rust, which can be used in various IDEs like Visual Studio Code or Emacs \cite{rust_analyzer_user_2023}.
 
 \subsubsection{Technology}
-Verus translates the Rust-like code into instructions for the Z3 SMT solver \cite{lattuada_verus_2023}, based on the generated \acs{hir} from the Rust compiler \cite{chris_hawblitzel_verussourcecodemd_2021}. Functions written in specification mode are directly translated to SMT function calls, as Verus aims to provide lightweight verification condition encoding \cite{lattuada_verus_2023}. As a result, specification functions cannot be equipped with pre- and postconditions \cite{lattuada_verus_2023}. To support the user, Verus allows to equip those functions with \textit{soft} preconditions, annotated with \lstinline{recommends}, which Verus only invokes if there is a verification error \cite{lattuada_verus_2023}. 
+Verus translates the Rust-like code into instructions for the Z3 SMT solver \cite{lattuada_verus_2023-1}, based on the generated \acs{hir} from the Rust compiler \cite{chris_hawblitzel_verussourcecodemd_2021}. Functions written in specification mode are directly translated to SMT function calls, as Verus aims to provide lightweight verification condition encoding \cite{lattuada_verus_2023-1}. As a result, specification functions cannot be equipped with pre- and postconditions \cite{lattuada_verus_2023-1}. To support the user, Verus allows to equip those functions with \textit{soft} preconditions, annotated with \lstinline{recommends}, which Verus only invokes if there is a verification error \cite{lattuada_verus_2023-1}. 
 
-Verus relies on Rust's borrow checker, comparable to Creusot (see Chapter \ref{cap:creusot_technology}) \cite{lattuada_verus_2023}. The tool does not create additional theories for Z3 to check the guarantees Rust promises. This is apparent in the way Verus encodes mutable references: Mutable references are encoded to Z3 as immutable values, one assignment per mutation \cite{lattuada_verus_2023}. 
+Verus relies on Rust's borrow checker, comparable to Creusot (see Chapter \ref{cap:creusot_technology}) \cite{lattuada_verus_2023-1}. The tool does not create additional theories for Z3 to check the guarantees Rust promises. This is apparent in the way Verus encodes mutable references: Mutable references are encoded to Z3 as immutable values, one assignment per mutation \cite{lattuada_verus_2023-1}. 
 
 \subsubsection{Feedback}
 Due to Verus's integration into the Rust compiler, error messages regarding the syntax or verification errors are displayed like regular Rust errors, similar to Prusti's behaviour (see Chapter \ref{cap:prusti_feedback}). As can be seen in \autoref{lst:verus_wrong_postcondition}, Verus marks the postcondition which is not satisfied, but it is not capable to exactly pinpoint the operation in the body of the function, which causes the error.
@@ -58,8 +58,26 @@ verification results:: verified: 1 errors: 1
 \end{lstlisting}
 
 \subsubsection{Language Support and Verification Conditions}
-%Overflow/Underflow, assert/assume, #[verifier(external_body)], Quanttifiers, Loop invariants, inline smt solver parameters, kein unsafe aber abstractions (interior mutability, heap pointers, concurrent data), spec/proof functions nur valid wenn sie terminieren; decrease clause, keine return mutable borrows (soll bald gefixt werden)
-% Auch noch user manual prüfen was da noch drinnen ist
+
+Verus supports recursive function calls in all of its three code modes \cite{lattuada_verus_2023-1}. The user has to ensure that recursive function calls in specification and proof mode terminate, as they are only valid if they terminate \cite{lattuada_verus_2023-1}. Verus enforces this with a required \lstinline{decreases} clause, which marks the variable the the next recursive call decreases \cite{lattuada_verus_2023-1}. Code written in exec mode is not affected by this requirement \cite{lattuada_verus_2023-1}.
+
+Verus does not support unsafe Rust \cite{lattuada_verus_2023-1}. It aims to replace some unsafe operations with core primitives \cite{lattuada_verus_2023-1}. For example, Verus offers so called \textit{permission pointers} and \textit{permission plus data} types as an alternative for raw heap pointers in unsafe Rust. Verus proofs the correctness of those replacements with a logic called \textit{linear ghost state} \cite{lattuada_verus_2023-1}. In the complementary literature \cite{lattuada_verus_2023-1,lattuada_verus_2023}, the authors of Verus prove the capabilities of their alternative by implementing a double-linked list, which is possible, but not practicable to implement in safe Rust \cite{learning_rust_with_entirely_too_many_linked_lists_final_2023}. 
+
+Verus supports interior mutability \cite{lattuada_verus_2023-1}. The tool provides two strategies to safely use this technique: first, it offers an alternative to the UnsafeCell<T> type \cite{lattuada_verus_2023-1}, which safe wrappers like Rc<T> or Cell<T> depend on. It acts analog to the alternative raw heap pointers Verus offers \cite{lattuada_verus_2023-1}. Second, the tool provides a type called \textit{InvCell<T>}, which does not keep track of its interior value \cite{lattuada_verus_2023-1}. It uses invariants to restrict the valid values and enforces those invariants when a value is written into the cell \cite{lattuada_verus_2023-1}. 
+The authors provide for the latter a function call example, which uses memoization across multiple clients and therefore requiring interior mutability \cite{lattuada_verus_2023-1,lattuada_verus_2023}.
+
+% TODO fertig machen
+Verus supports reasoning for concurrent data structures \cite{lattuada_verus_2023-1}. 
+
+Additionally, Verus has support for
+\begin{itemize}
+    \item Pre- and postconditions \cite{lattuada_verus_2023-1}
+    \item Inline assertions and assumptions \cite{lattuada_verus_2023-1,verus-lang_assert_2023}
+    \item Quantifiers \cite{lattuada_verus_2023-1,verus-lang_quantifiers_2023}
+    \item Loop invariants \cite{lattuada_verus_2023-1,verus-lang_loops_2023}
+    \item Overflow/Underflow checks \cite{verus-lang_integers_2023}
+    \item Equivalence relation \cite{verus-lang_equality_2023}
+\end{itemize}
 \subsubsection{Development}
 % ETH Zuruch und UMCB
 \subsubsection{Activity}
