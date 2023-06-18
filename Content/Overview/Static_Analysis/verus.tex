@@ -1,6 +1,6 @@
 \subsection{Verus}
 
-Verus is a SMT-based tool for verification for \textit{Rust-like} code \cite{lattuada_verus_2023-1,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich \cite{lattuada_verus_2023-1}.
+Verus is a SMT-based tool for verification for \textit{Rust-like} code \cite{lattuada_verus_2023-1,verus-lang_goals_2023}, whose development has started in April of 2021 \footnote{According to the tool's GitHub log \cite{verus-lang_add_2021}}. The development has mainly been performed at the ETH Zurich and Carnegie Mellon University, USA \cite{lattuada_verus_2023-1}.
 
 The tool features fully automatically verification and translates the to be verified code into SMT solver instructions for the SMT solver Z3. The tool has been inspired by projects like Dafny, Boogie, Prusti (see Chapter \ref{cap:prusti}), Coq and more \cite{verus-lang_goals_2023}. There were several goals for designing Verus:
 
@@ -66,8 +66,7 @@ Verus does not support unsafe Rust \cite{lattuada_verus_2023-1}. It aims to repl
 Verus supports interior mutability \cite{lattuada_verus_2023-1}. The tool provides two strategies to safely use this technique: first, it offers an alternative to the UnsafeCell<T> type \cite{lattuada_verus_2023-1}, which safe wrappers like Rc<T> or Cell<T> depend on. It acts analog to the alternative raw heap pointers Verus offers \cite{lattuada_verus_2023-1}. Second, the tool provides a type called \textit{InvCell<T>}, which does not keep track of its interior value \cite{lattuada_verus_2023-1}. It uses invariants to restrict the valid values and enforces those invariants when a value is written into the cell \cite{lattuada_verus_2023-1}. 
 The authors provide for the latter a function call example, which uses memoization across multiple clients and therefore requiring interior mutability \cite{lattuada_verus_2023-1,lattuada_verus_2023}.
 
-% TODO fertig machen
-Verus supports reasoning for concurrent data structures \cite{lattuada_verus_2023-1}. 
+Verus supports reasoning for concurrent data structures \cite{lattuada_verus_2023-1}. It uses \textit{user-defined ghost values}, which in summary, represents a thread-local view of a global program state, enhanced with invariants and ghost types \cite{lattuada_verus_2023-1}. The authors provide four examples for using that technique, including a concurrent FIFO queue and a thread-safe reader-writer lock \cite{lattuada_verus_2023-1,lattuada_verus_2023}.
 
 Additionally, Verus has support for
 \begin{itemize}
@@ -78,11 +77,21 @@ Additionally, Verus has support for
     \item Overflow/Underflow checks \cite{verus-lang_integers_2023}
     \item Equivalence relation \cite{verus-lang_equality_2023}
 \end{itemize}
+
 \subsubsection{Development}
-% ETH Zuruch und UMCB
+Verus has been developed as a research project at the ETH Zurich, Carnegie Mellon University (USA), UNSW Sydney, VMWare Research and Microsoft Research \cite{lattuada_verus_2023-1} and was first introduced at the 2022 occurrence of the Rust Verification Workshop \cite{peter_muller_rust_2022}. The project members involved in the development were Andrea Lattuada, Travis Hance, Chanhee Cho, Matthias Brun, Isitha Subasinghe, Yi Zhou, Jon Howell, Bryan Parno and Chris Hawblitzel \cite{lattuada_verus_2023-1}. The project is partly funded by VMWare, the Alfred P. Sloan Foundation, Intel Corporation and the Future Enterprise Security initiative at Carnegie Mellon CyLab \cite{lattuada_verus_2023-1}.
+
 \subsubsection{Activity}
-%Evaluierung vorhanden, Beispielcode in Complementary matrial (allerdings alte syntax)
-% Keine praktische Anwendung/Paper gefunden
+Verus is being actively developed with over 1,750 commits in the main branch since 2021 \cite{verus-lang_verus-langverus_2023}. 
+
+Verus is not feature complete yet \cite{verus-lang_verus-langverus_2023}. This lack of feature-completeness is also indicated by the several grayed-out chapters in the complementary user manual \cite{verus-lang_getting_2023}. There are currently about 40 issues open in GitHub and about 150 have been closed already \cite{verus-lang_issues_2023}.
+
+Verus has been evaluated with 12 different example programs, which can be found in the complementary material \cite{lattuada_verus_2023}. Those examples had a total amount of 834 lines of code in specification mode, 487 lines of code in proof mode and 811 lines of code in exec mode \cite{lattuada_verus_2023}.
+
+Brun has used Verus to verify paging functions written in Rust for a research operating system called NrOS, targeting x86\_64 architecture \cite{brun_verified_2022}.
+
 \subsubsection{Scientific activity}
+%https://sites.google.com/view/rustverify2022/home
+
 %https://scholar.google.de/scholar?hl=en&as_sdt=0%2C5&q=Verus%3A+Verifying+Rust+Programs+using+Linear+Ghost+Types&btnG=
 \subsubsection{Documentation}

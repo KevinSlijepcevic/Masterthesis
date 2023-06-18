@@ -88,7 +88,7 @@ Additionally, Prusti has support for
 \end{itemize}
 
 \subsubsection{Development}
-Prusti has been developed at the ETH Zurich as a proof-of-concept alongside the publication \textit{Leveraging Rust Types for Modular Specification and Verification} \cite{astrauskas_leveraging_2019}. The Swiss National Science Foundation, Facebook and Amazon Web Services are funding the project \cite{eth_zurich_prusti_2023}. The current projects members from the ETH Zurich are Vytautas Astrauskas, Aurel Bílý, Jonas Fiala, Peter Müller and Federico Poli \cite{eth_zurich_prusti_2023}. Further members are Christoph Matheja from the DTU Copenhagen and Alex Summers from the UBC in Vancouver, Canada \cite{eth_zurich_prusti_2023}.
+Prusti has been developed at the ETH Zurich alongside the publication \textit{Leveraging Rust Types for Modular Specification and Verification} \cite{astrauskas_leveraging_2019}. The Swiss National Science Foundation, Facebook and Amazon Web Services are funding the project \cite{eth_zurich_prusti_2023}. The current projects members from the ETH Zurich are Vytautas Astrauskas, Aurel Bílý, Jonas Fiala, Peter Müller and Federico Poli \cite{eth_zurich_prusti_2023}. Further members are Christoph Matheja from the DTU Copenhagen and Alex Summers from the UBC in Vancouver, Canada \cite{eth_zurich_prusti_2023}.
 
 \subsubsection{Activity}
 Prusti is being actively maintained and improved with over 7,000 commits in the main branch since 2017 \cite{eth_zurich_viperprojectprusti-dev_2023}. Its latest stable release was in January of 2023, the latest nightly pre-release in May of 2023 \cite{eth_zurich_releases_2023}. 
@@ -97,7 +97,7 @@ Prusti is not feature-complete yet; there are about 200 issues in GitHub current
 
 The Prusti development team has evaluated the tool in several ways: first, they successfully tested the automated core proof generation on 11,791 functions of the top 500 Rust crates of the year 2018 \cite{astrauskas_leveraging_2019}. Second, they identified 519 possible functions in those crates where theoretically an overflow or division by zero could happen, showing that 467 functions have some sort of problem, with the vast majority having an overflow or division by zero problem \cite{astrauskas_leveraging_2019}. Third, they took 16 examples for verifying panic and overflow freedom, while designing and applying specifications on 7 of them \cite{astrauskas_leveraging_2019}. Those 16 examples had a total amount of 471 lines of code, with a total investment of 389 lines of code for Prusti annotations.
 
-Gijsberts has demonstrated that it is feasible to verify a key-value store with Prusti \cite{stef_gijsberts_prusti_2023}.
+Gijsberts has demonstrated that it is feasible to verify a key-value store with Prusti \cite{stef_gijsberts_prusti_2023}. Schar has used Prusti to verify a refinement between a TLA$^+$ model and a Rust implementation \cite{schar_proving_2023}.
 
 \subsubsection{Scientific activity}
 Prusti has been presented at the first occurrence of the Rust Verification Workshop in 2021 \cite{peter_muller_rust_2021}. This presentation is also featured on the official Rust YouTube channel \cite{alex_summers_prusti_2021}.

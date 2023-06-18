@@ -1,4 +1,79 @@
 
+@thesis{brun_verified_2022,
+	title = {Verified Paging for x86-64 in Rust},
+	url = {https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/594366/1/Brun_Matthias.pdf},
+	abstract = {Writing correct operating systems is hard because they interact with
+complex computer hardware. At the same time, their reliability is ex-
+tremely important because they represent the foundation of the many
+other software systems relying on them.
+Machine-checked formal verification can provide strong guarantees
+about a program’s behavior in all possible situations. {SeL}4 and other
+projects have demonstrated that the complete verification of an operat-
+ing system’s kernel is feasible but time-consuming. More recently, the
+{VeriBetrKV} project has shown that {SMT}-based verification workflows
+can scale to large end-to-end verification projects of low-level systems
+software.
+In this thesis we develop paging functions targeting x86-64 hardware.
+We implement the functions in Rust and verify them using the new
+{SMT}-based verifier Verus. Finally, we integrate the functions into a
+research operating system and evaluate their performance.
+By verifying one subsystem of an {OS}, we demonstrate that an approach
+based on Verus and state machine refinement is effective for proving
+complex properties about operating systems.
+Our work has influenced Verus’ development in multiple ways and we
+found and reported a large number of bugs, including ones affecting
+the soundness of verification results.},
+	pagetotal = {144},
+	institution = {{ETH} Zurich},
+	type = {phdthesis},
+	author = {Brun, Matthias},
+	urldate = {2023-06-18},
+	date = {2022-10-02},
+	langid = {english},
+}
+
+@online{verus-lang_issues_2023,
+	title = {Issues · verus-lang/verus},
+	url = {https://github.com/verus-lang/verus/issues},
+	type = {{GitHub} Repository},
+	author = {{verus-lang}},
+	urldate = {2023-06-18},
+	date = {2023-06-18},
+	langid = {english},
+}
+
+@thesis{schar_proving_2023,
+	title = {Proving Refinement in a Rust Verifier},
+	url = {https://ethz.ch/content/dam/ethz/special-interest/infk/chair-program-method/pm/documents/Education/Theses/Jan_Schaer_MS_Thesis.pdf},
+	abstract = {Software verification has the goal of ensuring correctness of software.
+Refinement is a verification technique, where we prove that one system
+implements a smaller, simpler system, which serves as a specification for
+the larger system. The technique is especially useful for the verification
+of concurrent and distributed systems. We would like to use refinement
+to prove that a program written in a language such as Rust correctly
+implements an abstract specification in the style of {TLA}+.
+In this thesis, we present an approach for describing and verifying
+refinement between a {TLA}+ model and an implementation written in
+Rust, based on the approach described in “Flexible Refinement Proofs
+in Separation Logic” by B´ıl ´y et al. [1]. We implemented this approach in
+Prusti, a verification tool for Rust. The model state is embedded in the
+implementation as ghost state, protected by a ghost lock. The ghost lock
+can be acquired to perform steps in the model; this way model steps
+are linked to implementation steps. Model steps can be protected by
+a guard; these steps can then exclusively be performed by the thread
+which owns the guard. For the verification of larger applications, a
+modular approach is needed. We support trusted modules for primitives
+such as atomic variables, as well as verified modules with an inner
+model, which can be linked to the outer model where the module is
+used. Finally, we demonstrate the approach on two case studies.},
+	pagetotal = {75},
+	institution = {{ETH} Zurich},
+	type = {phdthesis},
+	author = {Schar, Jan},
+	date = {2023-05-10},
+	langid = {english},
+}
+
 @software{lattuada_verus_2023,
 	title = {Verus: Verifying Rust Programs using Linear Ghost Types -- Supplementary Material},
 	url = {https://zenodo.org/record/7718498},
