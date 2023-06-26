@@ -1,4 +1,48 @@
 
+@video{rust_formal_methods_ig_february_2022,
+	title = {February Session -- Creusot},
+	url = {https://www.youtube.com/watch?v=JP8Q8GYJzb8},
+	abstract = {Xavier Denis shares work on his tool Creusot, a deductive verifier for Rust based on the prophetic approach of {RustHorn}.
+
+Don't forget to check out our website for upcoming events:
+
+https://rust-formal-methods.github.io
+
+and our twitter:
+
+https://twitter.com/formalferris},
+	author = {{Rust Formal Methods IG}},
+	urldate = {2023-06-26},
+	date = {2022-03-01},
+}
+
+@video{rust_formal_methods_ig_verus_2023,
+	title = {Verus -- {SMT}-based verification of Rust systems code},
+	url = {https://www.youtube.com/watch?v=7WtWA0TTBqg},
+	abstract = {Abstract:
+
+We are building Verus, a new tool for semi-automatic verification of Rust code using an {SMT} solver (Z3). Verus can efficiently verify full functional correctness of low-level systems code written in a safe Rust dialect that supports expressing specifications and proofs. Verus leverages the fact that safe Rust has a natural, direct encoding in {SMT} (for code without interior mutability, which we need to address separately). Algebraic data types ({ADTs}) and sound generics complement safe Rust to make it a solid basis for a mathematical language for expressing specifications and proofs.
+
+In this talk I'll discuss Verus' design, its mathematical language to express specification and proofs built from a subset of Rust, and how Verus prioritizes lean, efficient encoding of safe Rust to {SMT} queries. I will present Verus' features that aid verification of complex systems, such as linear ghost variables: these are proof-time variables that are not compiled, but retain the unique-ownership and safe reference rules established by the borrow checker. Linear ghost variables let us efficiently reason about interior mutability and shared-memory concurrency, and let us provide safe alternatives for many situations where unsafe would be required in vanilla Rust.
+
+About the speaker:
+
+Andrea is a researcher for {VMWare} Research, previously he was a {PhD} candidate in {ETH} Zurich's Systems Group.},
+	author = {{Rust Formal Methods IG}},
+	urldate = {2023-06-26},
+	date = {2023-03-02},
+}
+
+@video{rust_formal_methods_ig_aeneas_2022,
+	title = {Aeneas: Aeneas Verification by Functional Translation},
+	url = {https://www.youtube.com/watch?v=9j9EE36lJJI},
+	shorttitle = {Aeneas},
+	abstract = {This talk presents Aeneas, a new verification toolchain for Rust programs based on a lightweight functional translation. We leverage Rust's rich region-based type system to eliminate memory reasoning for a large class of Rust programs by translating them to a pure lambda-calculus, as long as they do not rely on interior mutability or unsafe code. Doing so, it relieves the proof engineer of the burden of memory-based reasoning, allowing them to instead focus on functional properties of their code.},
+	author = {{Rust Formal Methods IG}},
+	urldate = {2023-06-26},
+	date = {2022-11-07},
+}
+
 @online{aeneasverif_issues_2023,
 	title = {Issues · {AeneasVerif}/charon},
 	url = {https://github.com/AeneasVerif/charon/issues},
