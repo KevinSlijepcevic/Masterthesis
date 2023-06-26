@@ -15,16 +15,11 @@ However, it enables the user to have more control over the verification process 
 Aeneas doesn't require any additional annotations in the to be verified Rust source code \cite{ho_aeneas_2022}. This makes it easy for an already existing codebase to be verified with the tool and keeps the code uncluttered. 
 
 \subsubsection{Technology}
-% Functional Aeneas Semantics evtl erwähnen
 
-% Forward, Backward Functions
-%MIR -> CHaron -> LLBC -> Aeneas -> Lightweight Funktionales Model
-% Erstellt eigenen Borrow Graph
-% Charon und Aeneas aufgeteilt in 2 seperate Projekte und Entwicklungszyklen
+A key feature of Aeneas is the LLBC generation from Rust code. The LLBC represents a new approach of borrow-checking and allows for fine-grained tracking of aliasing of values \cite{ho_aeneas_2022}. Therefore, Aeneas does not rely on the Rust borrow-checker. It is inspired by the \acs{mir} from the default Rust compiler, but adds some high-level techniques like an intact control-flow and a limited form of pattern matching \cite{ho_aeneas_2022}. The authors provide fully-featured semantics for the LLBC in their supplementary literature \cite{ho_aeneas_2022}. The authors also state that their provided semantics surpass the capabilities of the default Rust borrow-checker and even the improved version of it, \textit{Polonius} \cite{polonius_what_2023} \cite{ho_aeneas_2022}.
 
-% Genauere Ownership prüfung möglich durch Aeneas (könnte auch irgendwann polonius und den default Rust borrow checker ersetzen)
+The appliance of the LLBC semantics is checked with a large amount of tight invariants, to ensure the correct translation of the Rust code \cite{ho_aeneas_2022}.
 
-%Invariants prüfen übersetzung
 \subsubsection{Feedback}
 Due to the outsourcing of the actual verification process, Aeneas only provides feedback for translating the Rust source code into the functional model. Verification error messages are up to the used proof assistants.
 
