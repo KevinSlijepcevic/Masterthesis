@@ -2,28 +2,28 @@
 
 Aeneas is a verification toolchain for translating Rust into a functional model \cite{ho_aeneas_2022}, whose development has started in November of 2021\footnote{According to the tool's GitHub log \cite{aeneasverif_initial_2021}}. 
 
-The tool provides a semi-automatic translation and is split into two parts: \textit{Charon} \cite{aeneasverif_aeneasverifcharon_2023}, which is a standalone Rust compiler plugin and extracts a so called \textit{Low-level Borrow Calculus} (LLBC) representation from a given Rust code and \textit{Aeneas} \cite{aeneasverif_aeneasverifaeneas_2023}, which performs the functional translation of the LLBC representation \cite{ho_aeneas_2022}. The actual verification of this model has to be performed manually by the user.
+The tool provides a semi-automatic translation and is split up into two modules: \textit{Charon} \cite{aeneasverif_aeneasverifcharon_2023}, which is a standalone Rust compiler plugin and is used to extract a so called \textit{Low-level Borrow Calculus} (LLBC) representation from  Rust source code, and \textit{Aeneas} \cite{aeneasverif_aeneasverifaeneas_2023}, which performs the functional model translation of the LLBC representation \cite{ho_aeneas_2022}. The actual verification of this model has to be performed manually by the user.
 
-The applied technique can be compared with previous work accomplished by Ullrich \cite{ullrich_simple_2016}, who provided a functional translation of Rust source code into the Lean language. 
+The applied technique can be compared with previous project accomplished by Ullrich \cite{ullrich_simple_2016} called \textit{Electrolysis}, which provided a functional translation of Rust source code into the Lean language. 
 
 \subsubsection{Usability}
-Like all previously mentioned tools in this thesis, Aeneas (or rather Charon) integrates itself into the Rust compiler as a compiler plugin \cite{ho_aeneas_2022}. It also makes use of the generated \acs{mir} for its extraction process \cite{ho_aeneas_2022}.
+Like all previously mentioned tools in this thesis, Aeneas (or rather Charon) integrates itself into the Rust compiler as a compiler plugin, using the generated \acs{mir} for its extraction process \cite{ho_aeneas_2022}.
 
-The translation process is semi-automatic: first, the user has to invoke the Charon binary, which takes the Rust source code and extracts the LLBC representation from it. Second, the extracted LLBC representation has to imported and processed by the Aeneas binary, which produces the functional model translation. This model then has to be imported into the selected proof assistant and can be verified there. Aeneas currently supports F* and Coq, support for HOL4, Lean and others is planned \cite{aeneasverif_aeneasverifaeneas_2023,ho_aeneas_2022}. This approach makes verification with Aeneas only accessible to users with domain knowledge in verification and the usage of proof assistants. It also adds an additional abstraction layer to the verification process, as the proofs are not directly tied to the Rust code under verification.
-However, it enables the user to have more control over the verification process and choose the proof assistant, in which the user is most comfortable \cite{ho_aeneas_2022}. 
+The translation process from Rust source code to a functional model is semi-automatic: first, the user has to invoke the Charon binary, which takes the code and extracts the LLBC representation from it. Second, the extracted LLBC representation has to be parsed and processed by the Aeneas binary, which produces the functional model for the selected proof assistant. This model then has to be imported into the proof assistant and can be verified there. Aeneas currently supports F* and Coq, support for HOL4, Lean and others is planned \cite{aeneasverif_aeneasverifaeneas_2023,ho_aeneas_2022}. This approach makes verification with Aeneas only accessible to users with domain knowledge in verification and the usage of proof assistants, respectively. It also adds an additional abstraction layer to the verification process, as the proofs are not directly tied to the Rust source code under verification.
+However, it enables the user to have more control over the verification process and choose the proof assistant, in which the user is most comfortable with \cite{ho_aeneas_2022}. 
 
-Aeneas doesn't require any additional annotations in the to be verified Rust source code \cite{ho_aeneas_2022}. This makes it easy for an already existing codebase to be verified with the tool and keeps the code uncluttered. 
+Aeneas doesn't require any additional annotations in the to be verified Rust source code \cite{ho_aeneas_2022}. This makes it easy for an already existing codebase to be verified with the tool and keeps the code uncluttered. Additionally, the user doesn't have to learn syntax rules for writing annotations.
 
 \subsubsection{Technology}
 
-A key feature of Aeneas is the LLBC generation from Rust code. The LLBC represents a new approach of borrow-checking and allows for fine-grained tracking of aliasing of values \cite{ho_aeneas_2022}. Therefore, Aeneas does not rely on the Rust borrow-checker. It is inspired by the \acs{mir} from the default Rust compiler, but adds some high-level techniques like an intact control-flow and a limited form of pattern matching \cite{ho_aeneas_2022}. The authors provide fully-featured semantics for the LLBC in their supplementary literature \cite{ho_aeneas_2022}. The authors also state that their provided semantics surpass the capabilities of the default Rust borrow-checker and even the improved version of it, \textit{Polonius} \cite{polonius_what_2023} \cite{ho_aeneas_2022}.
+A key contribution of Aeneas is the LLBC generation from Rust source code. The LLBC represents a new approach of borrow-checking and allows for fine-grained tracking of value aliasing \cite{ho_aeneas_2022}. Therefore, Aeneas does not rely on Rust's integrated borrow-checker. LLBC has been inspired from Rust's \acs{mir}, but adds some high-level techniques like an intact control-flow and a limited form of pattern matching \cite{ho_aeneas_2022}. The authors provide fully-featured semantics for the LLBC in their supplementary literature and how the extraction and translation process works \cite{ho_aeneas_2022}. They also state that their provided technique surpasses the capabilities of Rust's default borrow-checker and even the experimental improved version of it, \textit{Polonius} \cite{polonius_what_2023} \cite{ho_aeneas_2022}.
 
-The appliance of the LLBC semantics is checked with a large amount of tight invariants, to ensure the correct translation of the Rust code \cite{ho_aeneas_2022}.
+The appliance of the LLBC semantics is checked with the utilization of tightly-designed invariants, to ensure the correct extraction and translation of the Rust source code \cite{ho_aeneas_2022}.
 
 \subsubsection{Feedback}
 Due to the outsourcing of the actual verification process, Aeneas only provides feedback for translating the Rust source code into the functional model. Verification error messages are up to the used proof assistants.
 
-Charon is the main feedback source. If Charon is unable to extract the LLBC from a given Rust code, it issues an error. Due to the lack of annotations, an error can only happen due to usage of unsupported Rust features. This error message is opaque though, as it does not state exactly what is causing the error, as can be seen in \autoref{lst:Aeneas_error}. Using Rust's backtrace feature doesn't offer any useful information as well.
+Charon is the main feedback source. If Charon is unable to extract the LLBC from a given Rust source code, it issues an error. Due to the lack of annotations, an error can only if the source code uses an unsupported Rust feature. The generated error message is opaque though, as it does not state what exactly is causing the error, as can be seen in \autoref{lst:Aeneas_error}. Using Rust's backtrace feature doesn't offer any useful information as well.
 
 \begin{lstlisting}[float, language=Rust, caption=Example error message for an unsupported Rust function in Charon, label={lst:Aeneas_error}]
 Compiling dictionary v0.1.0 (/Users/kevin/IdeaProjects/dictionary)
@@ -35,11 +35,11 @@ error: could not compile `dictionary`
 \subsubsection{Language Support and Verification Conditions}
 \label{cap:aeneas_language_verification}
 
-Aeneas supports and focuses on a subset of safe Rust, which is functional in its \textit{essence} \cite{ho_aeneas_2022}. It is planed to extent the scope of support for Rust and to be on-pair with other tools like Prusti and Creusot \cite{ho_aeneas_2022}, so some of the following limitations could be solved in the future.
+Aeneas supports and focuses on a subset of safe Rust, which is functional in its \textit{essence} \cite{ho_aeneas_2022}. It is planed to extent the scope of support for Rust and to be on-pair with other tools like Prusti (see Chapter \ref{cap:prusti}) and Creusot (see Chapter \ref{cap:creusot}) \cite{ho_aeneas_2022}, so some of the following limitations could be solved in the future.
 
-It can translate all variants of borrowing, which includes mutable and shared borrowing, two-phase borrows, reborrowing, nested borrows and returning borrows in function calls \cite{ho_aeneas_2022}. One exception is the handling of nested borrows in function headers, which is caused by preventing a especially difficult case for translation from happening: mutable borrows with different lifetimes, for example \lstinline{&'a mut &'b mut T} \cite{ho_aeneas_2022}.
+The tool can translate all variants of borrowing, which includes mutable and shared borrowing, two-phase borrows, reborrowing, nested borrows and returning borrows from function calls \cite{ho_aeneas_2022}. One exception is the handling of nested borrows in function headers, which is caused by preventing a especially difficult case for translation from happening: nested mutable borrows with different lifetimes like \lstinline{&'a mut &'b mut T} \cite{ho_aeneas_2022}.
 
-Loops are not supported yet, but recursive function calls are \cite{ho_aeneas_2022}. For those kind of function calls, Aeneas adds additional invariants to the generated model \cite{ho_aeneas_2022}. For example, for the F* proof assistant, Aeneas adds a decrease clause, which refers to a user-specific lemma, the user has to fill out and has to prove termination \cite{ho_aeneas_2022}.
+Loops are not supported yet, but recursive function calls are \cite{ho_aeneas_2022}. For those kind of function calls, Aeneas adds additional invariants to the generated model \cite{ho_aeneas_2022}. For example, for the F* proof assistant, Aeneas adds a decrease clause, which refers to a user-specific lemma the user has to fill out and which has to prove that the recursive function call terminates \cite{ho_aeneas_2022}.
 
 Aeneas can also handle external function calls and code which interacts with external resources, for example I/O \cite{ho_aeneas_2022}. It is possible to mark those as \textit{opaque}, which lets Aeneas assume them as correct \cite{ho_aeneas_2022}. The user then can add lemmas inside of the generated model to those marked crates and functions, to further define their assumed behaviour \cite{ho_aeneas_2022}.
 
@@ -49,11 +49,11 @@ Support for verification conditions cannot be evaluated, due to the lack of actu
 
 \subsubsection{Development}
 
-Aeneas has been developed by Son Ho from the the National Institute for Research in Digital Science and Technology in France and Jonathan Protzenko, from Microsoft Research, USA \cite{ho_aeneas_2022}. The supplementary paper \cite{ho_aeneas_2022} doesn't mention any funding. 
+Aeneas has been developed by Son Ho from the the National Institute for Research in Digital Science and Technology in France and Jonathan Protzenko from Microsoft Research, USA \cite{ho_aeneas_2022}. The supplementary paper \cite{ho_aeneas_2022} doesn't mention any funding. 
 
 \subsubsection{Activity}
 
-Aeneas and its subproject Charon are being actively developed. Aenas \cite{aeneasverif_aeneasverifaeneas_2023} has about 1,500 commits in its main branch, Charon about 500 \cite{aeneasverif_aeneasverifcharon_2023}. The authors of this tool are dedicated to improve the tools capabilities and limitations, as mentioned in Chapter \ref{cap:aeneas_language_verification}. There are currently 11 issues open \cite{aeneasverif_issues_2023-1} for Aeneas, with zero of them closed and six open \cite{aeneasverif_issues_2023} for Charon, with two of them closed.
+Aeneas and its subproject Charon are being actively developed. Aenas \cite{aeneasverif_aeneasverifaeneas_2023} has about 1,500 commits in its main branch, Charon about 500 \cite{aeneasverif_aeneasverifcharon_2023}. The authors of this tool are dedicated to improve its capabilities and limitations, as mentioned in Chapter \ref{cap:aeneas_language_verification}. There are currently 11 issues open \cite{aeneasverif_issues_2023-1} for Aeneas, with zero of them closed and six open \cite{aeneasverif_issues_2023} for Charon, with two of them closed.
 
 The authors have evaluated Aeneas with an example implementation of a resizeable hash table in Rust, which has been translated into a functional model for the F* proof assistant \cite{ho_aeneas_2022}. The authors have invested 201 lines of code for the proofing the correctness of this implementation in F* \cite{ho_aeneas_2022}. 
 
@@ -65,6 +65,6 @@ The supplementary publication regarding Aeneas \cite{ho_aeneas_2022} has been ci
 
 \subsubsection{Documentation}
 
-Because Aeneas does not need any kind of annotations, it does not have a dedicated user guide accordingly. It does provide a usage guide \cite{aeneasverif_aeneasverifaeneas_2023} on how to use the binaries for extracting the LLBC and generating the functional model. Additionally, the tool provides automatically generated developer documentation for the Charon \cite{aeneasverif_aeneasverifcharon_2023} and Aeneas \cite{aeneasverif_aeneasverifaeneas_2023} modules.
+ The tool provides a usage guide \cite{aeneasverif_aeneasverifaeneas_2023} on how to use the binaries for extracting the LLBC and generating the functional model. Additionally, the tool provides automatically generated developer documentation for the Charon \cite{aeneasverif_aeneasverifcharon_2023} and Aeneas \cite{aeneasverif_aeneasverifaeneas_2023} modules.
 
-The authors provide a detailed explanation of their used semantics for the translation process and example translations into F* in their supplementary paper \cite{ho_aeneas_2022}.
+The authors provide a detailed documentation of their LLBC semantics and example translations from Rust source code into a functional model for the F* proof assistant in their supplementary paper \cite{ho_aeneas_2022}.
