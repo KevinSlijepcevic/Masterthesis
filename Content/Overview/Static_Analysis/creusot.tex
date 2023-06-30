@@ -1,7 +1,9 @@
 \subsection{Creusot}
 \label{cap:creusot}
 
-Creusot is a \textit{deductive} verification tool for Rust whose development has started in October of 2020\footnote{According to the tool's corresponding GitHub log \cite{xavier_denis_initial_2020}}. The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations. These theories have to be imported into Why3 and evaluated there, either with the GUI or CLI version \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al., in a project called \textit{RustHorn} \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with logical expressions \cite{xavier_denis_xldeniscreusot_2023,riesco_creusot_2022}.
+Creusot is a \textit{deductive} verification tool for Rust whose development has started in October of 2020\footnote{According to the tool's corresponding GitHub log \cite{xavier_denis_initial_2020}}. 
+
+The verifying process is semi-automatic: Creusot automatically generates theories from a given Rust code extended with Creusot annotations. These theories have to be imported into Why3 and evaluated there, either with the GUI or CLI version \cite{riesco_creusot_2022}. Creusot extends the idea of \textit{prophecies}, which have been first introduced to Rust by Matsushita et al., in a project called \textit{RustHorn} \cite{matsushita_rusthorn_2021, riesco_creusot_2022}. Creusot uses a language called \textit{Pearlite} for designing its specifications, which represents a pure subset of the Rust programming language extended with logical expressions \cite{xavier_denis_xldeniscreusot_2023,riesco_creusot_2022}.
 
 \subsubsection{Usability}
 \label{cap:creusot_usability}
@@ -55,7 +57,7 @@ Additionally, Creusot has support for
 \end{itemize}
 
 \subsubsection{Development}
-Creusot has been developed as a research software \cite{xavier_denis_xldeniscreusot_2023} alongside the publication \textit{The CREUSOT Environment for the Deductive Verification of Rust Programs} \cite{denis_creusot_2021}. The three authors of both publications regarding Creusot \cite{denis_creusot_2021,riesco_creusot_2022}, Xavier Denis, Jacques-Henri Jourdan and Claude Marché are from the Université Paris-Saclay in France. There is no mentioning of any funding in the supplementary literature and GitHub repositories.
+Creusot has been developed as a research software \cite{xavier_denis_xldeniscreusot_2023} alongside the publication \textit{The CREUSOT Environment for the Deductive Verification of Rust Programs} \cite{denis_creusot_2021}. The three authors of both publications regarding Creusot \cite{denis_creusot_2021,riesco_creusot_2022}, Xavier Denis, Jacques-Henri Jourdan and Claude Marché are from the Université Paris-Saclay in France. There is no mentioning of any funding in the supplementary literature \cite{denis_creusot_2021,riesco_creusot_2022} and GitHub repositories.
 
 \subsubsection{Activity}
 Creusot is being actively maintained with over 1,500 commits in the main branch since 2020 \cite{xavier_denis_xldeniscreusot_2023}.
