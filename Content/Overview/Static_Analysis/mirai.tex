@@ -19,9 +19,9 @@ MIRAI integrates itself into the Rust compiler, leveraging the generated \acs{mi
 
 The tool can be used without annotating Rust source code for a reachability analysis, to prove that the program doesn't contain a execution path, which causes a runtime error \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This automatic approach can result in false positives and false negatives, especially when the \acs{mir} is missing for a function, e.g. a function call in another language \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI requires an \textit{entry point} for its analysis, such as the main, a test or any public function and can only analyse functions, which are reachable from that point \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This makes MIRAI an good addition to unit testing, as the coverage of reachable functions should be high.
 
-To use the formal correctness check MIRAI offers, annotations are required in the Rust source code \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI supports two crates for importing those: first, the \textit{contracts} crate \cite{karroffel_contracts_2023}, which is more light-weight and accessible to beginners \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, but does not support the more advanced features of MIRAI, like tag analysis \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. These kind of annotations can be compared to Prusti or Creusot annotations, as can bee seen in \autoref{lst:mirai_contracts_annotations_pre_postcondition}. The second crate MIRAI supports is the \textit{mirai-annotations} crate \cite{herman_venter_mirai-annotations_2023}, which provides macros that can be used to annotate the code. This approach doesn't allow constructs like old, as can be seen in \autoref{lst:mirai_mirai_annotations_pre_postcondition}. Is it possible to use both crates simultaneously, so the user can decide which feature from which crate is the most accessible.
+To use the formal correctness check MIRAI offers, annotations are required in the Rust source code \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI supports two crates for importing those: first, the \textit{contracts} crate \cite{karroffel_contracts_2023}, which is more light-weight and accessible to beginners \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, but does not support the more advanced features of MIRAI, like tag analysis \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Those kind of annotations can be compared to Prusti or Creusot annotations, as can bee seen in \autoref{lst:mirai_contracts_annotations_pre_postcondition}. The second crate MIRAI supports is the \textit{mirai-annotations} crate \cite{herman_venter_mirai-annotations_2023}, which provides macros that can be used to annotate the code. This approach doesn't allow constructs like old, as can be seen in \autoref{lst:mirai_mirai_annotations_pre_postcondition}. Is it possible to use both crates simultaneously, so the user can decide which feature from which crate is the most accessible.
 
-\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the contracts crate for MIRAI, label={lst:mirai_contracts_annotations_pre_postcondition}]
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the \textit{contracts} crate for MIRAI, label={lst:mirai_contracts_annotations_pre_postcondition}]
 #[requires(*val <= u32::MAX - 1)]
 #[ensures(*val == old(*val) + 1)]
 fn incr(val: &mut u32) {
@@ -29,7 +29,7 @@ fn incr(val: &mut u32) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the mirai-annotations crate for MIRAI, label={lst:mirai_mirai_annotations_pre_postcondition}]
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the \textit{mirai-annotations} crate for MIRAI, label={lst:mirai_mirai_annotations_pre_postcondition}]
 fn incr(val: &mut u32) {
     precondition!(*val <= u32::MAX - 1);
     let _old = *val;
@@ -45,14 +45,21 @@ fn incr(val: &mut u32) {
 %Benutzt Z3 solver under the hood laut quelltext
 \subsubsection{Feedback}
 \subsubsection{Language Support and Verification Conditions}
-%Invariants teilweise ja, quantifiers nein aber kein problem, tag analysis/taint analysis!, diagnostics für library code, call graph generator 
+%Invariants teilweise ja, quantifiers nein aber kein problem, tag analysis/taint analysis!, diagnostics für library code, call graph generator, foreign functions need model (oder sind unreachable bzw. runtime errors?) 
 \subsubsection{Development}
-MIRAI has been developed by Facebook Research to tackle the lack of a static analysis tool for Rust \cite{facebookexperimental_miraidocumentationoverviewmd_2021} for the development of \textit{Diem} \cite{diem_diemdiem_2023}.
+MIRAI has been developed by Facebook Research to tackle the lack of a static analysis tools for Rust \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This absence of static analysis tools of has been found out while researching and choosing Rust for the development of \textit{Diem} \cite{diem_diemdiem_2023} \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
 
 \subsubsection{Activity}
-MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The lasted release at the time of writing, Version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are currently no plans to further expand the tool, except for bug fixing \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, so it can be considered as feature complete.
-% Aktiv, eig feature complete 
+MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The latest release at the time of writing, version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are currently no plans to further expand the tool, except for bug fixing \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, so it can be considered as feature complete.
+
 \subsubsection{Scientific activity}
-% Kein Paper nur GitHub doku
+
+MIRAI has been presented at the 2021 occurrence of the Rust Verification Workshop \cite{peter_muller_rust_2021}. Additionally, it has been featured by the Rust Formal Verification Group \cite{rust_formal_methods_interest_group_tools_2021} and presented on their official YouTube channel \cite{rust_formal_methods_ig_january_2022}.
+
+MIRAI doesn't offer any supplementary scientific publication. It does, however, offer a discussion for some of its design decisions in its GitHub repository \cite{facebookexperimental_miraidocumentationdecisionsmd_2022}.
+
 \subsubsection{Documentation}
-% Liefert Codebeispiele und gibt doku und dev doku in github (user doku aber eher semi-gut)
+
+MIRAI provides an overview \cite{facebookexperimental_miraidocumentationoverviewmd_2021} for its capabilities but does not offer a dedicated user guide. It does offer a guide and examples on how to use the tag analysis feature in MIRAI \cite{facebookexperimental_miraidocumentationtaganalysismd_2021}. It also offers a manual for the graph generator feature \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}. Furthermore, both the contract \cite{karroffel_contracts_2023} and mirai-annotations \cite{herman_venter_mirai-annotations_2023} crate offer a manual on how to use them.
+
+MIRAI also provides six code examples, on how to use its verification and tag analysis features \cite{herman_venter_mirai-annotations_2023}.
