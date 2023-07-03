@@ -11,17 +11,17 @@ MIRAI provides four key features:
 
 The tool's goal is to become widely adopted for Rust static analysis \cite{facebookexperimental_facebookexperimentalmirai_2023}. It promotes itself as a production-ready alternative to research projects like Prusti (see Chapter \ref{cap:prusti}) or Creusot (see Chapter \ref{cap:creusot}), that is efficient and easy to use \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
 
-It also has a \textit{Request for Proposal} from the Web3 Foundation \cite{web3_foundation_grants-programdocsrfpsopenstatic-analysis-for-runtime-palletsmd_2023}.
+There also exists a \textit{Request for Proposal} from the Web3 Foundation for MIRAI \cite{web3_foundation_grants-programdocsrfpsopenstatic-analysis-for-runtime-palletsmd_2023}.
 
 \subsubsection{Usability}
 
-MIRAI integrates itself into the Rust compiler, leveraging the generated \acs{mir} for its static analysis \cite{facebookexperimental_miraidocumentationwhypluginmd_2021} and can be called via a cargo wrapper.
+MIRAI integrates itself into the Rust compiler, leveraging the generated \acs{mir} for its static analysis \cite{facebookexperimental_miraidocumentationwhypluginmd_2021}.
 
 The tool can be used without annotating Rust source code for a reachability analysis, to prove that the program doesn't contain a execution path, which causes a runtime error \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This automatic approach can result in false positives and false negatives, especially when the \acs{mir} is missing for a function, e.g. a function call in another language \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI requires an \textit{entry point} for its analysis, such as the main, a test or any public function and can only analyse functions, which are reachable from that point \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This makes MIRAI an good addition to unit testing, as the coverage of reachable functions should be high.
 
 To use the formal correctness check MIRAI offers, annotations are required in the Rust source code \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI supports two crates for importing those: first, the \textit{contracts} crate \cite{karroffel_contracts_2023}, which is more light-weight and accessible to beginners \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, but does not support the more advanced features of MIRAI, like tag analysis \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Those kind of annotations can be compared to Prusti or Creusot annotations, as can bee seen in \autoref{lst:mirai_contracts_annotations_pre_postcondition}. The second crate MIRAI supports is the \textit{mirai-annotations} crate \cite{herman_venter_mirai-annotations_2023}, which provides macros that can be used to annotate the code. This approach doesn't allow constructs like old, as can be seen in \autoref{lst:mirai_mirai_annotations_pre_postcondition}. Is it possible to use both crates simultaneously, so the user can decide which feature from which crate is the most accessible.
 
-\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the \textit{contracts} crate for MIRAI, label={lst:mirai_contracts_annotations_pre_postcondition}]
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the contracts crate for MIRAI, label={lst:mirai_contracts_annotations_pre_postcondition}]
 #[requires(*val <= u32::MAX - 1)]
 #[ensures(*val == old(*val) + 1)]
 fn incr(val: &mut u32) {
@@ -29,7 +29,7 @@ fn incr(val: &mut u32) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the \textit{mirai-annotations} crate for MIRAI, label={lst:mirai_mirai_annotations_pre_postcondition}]
+\begin{lstlisting}[float, language=Rust, caption=Example Rust code of an increase function with a pre- and postcondition from the mirai-annotations crate for MIRAI, label={lst:mirai_mirai_annotations_pre_postcondition}]
 fn incr(val: &mut u32) {
     precondition!(*val <= u32::MAX - 1);
     let _old = *val;
@@ -38,12 +38,26 @@ fn incr(val: &mut u32) {
 }
 \end{lstlisting}
 
+There seems to be a problem with the usage of the contracts crate in combination with MIRAI. If the postcondition for the increase function in \autoref{lst:mirai_contracts_annotations_pre_postcondition} states that the mutable reference \lstinline{val} has to be the same values as prior to execution, MIRAI does not issue a verification error. MIRAI does issue an potential overflow error, if the postcondition requires a greater result than the function actually results in, e.g. \lstinline{#[ensures(*val == old(*val) + 2)]}. This problem does not occur if the mirai-annotations crate is used for designing the postcondition.
 
 \subsubsection{Technology}
 %https://github.com/facebookexperimental/MIRAI/blob/main/documentation/Overview.md#abstract-interpretation
 
 %Benutzt Z3 solver under the hood laut quelltext
 \subsubsection{Feedback}
+
+MIRAIs integration into the Rust compiler enables error messages to be displayed as regular Rust error types, as can be seen in \autoref{lst:mirai_mirai_annotations_wrong_postcondition}. Furthermore, due to the usage of Rust's crate system, IDEs are capable of performing syntax checking and error highlighting for the annotations.
+
+\begin{lstlisting}[float, language=bash, caption= Example output of a verification error in MIRAI with the mirai-annotations crate, label={lst:mirai_mirai_annotations_wrong_postcondition}]
+warning: provably false postcondition
+  --> src/main.rs:14:5
+   |
+14 |     postcondition!(*val == _old + 2);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `mirai` (bin "mirai") generated 1 warning
+\end{lstlisting}
+
 \subsubsection{Language Support and Verification Conditions}
 %Invariants teilweise ja, quantifiers nein aber kein problem, tag analysis/taint analysis!, diagnostics für library code, call graph generator, foreign functions need model (oder sind unreachable bzw. runtime errors?) 
 \subsubsection{Development}
