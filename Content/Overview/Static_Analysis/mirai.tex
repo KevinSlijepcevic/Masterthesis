@@ -6,7 +6,7 @@ MIRAI provides four key features:
     \item Locate potential runtime errors without annotations \cite{facebookexperimental_facebookexperimentalmirai_2023}
     \item Verify formal correctness with annotations \cite{facebookexperimental_facebookexperimentalmirai_2023}
     \item Tag analysis with annotations, especially taint analysis \cite{facebookexperimental_miraidocumentationoverviewmd_2021,facebookexperimental_facebookexperimentalmirai_2023}
-    \item Generate a call graph \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}
+    \item Call graph generation \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}
 \end{itemize}
 
 The tool's goal is to become widely adopted for Rust static analysis \cite{facebookexperimental_facebookexperimentalmirai_2023}. It promotes itself as a production-ready alternative to research projects like Prusti (see Chapter \ref{cap:prusti}) or Creusot (see Chapter \ref{cap:creusot}), that is efficient and easy to use \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
@@ -40,13 +40,17 @@ fn incr(val: &mut u32) {
 
 There seems to be a problem with the usage of the contracts crate in combination with MIRAI. If the postcondition for the increase function in \autoref{lst:mirai_contracts_annotations_pre_postcondition} states that the mutable reference \lstinline{val} has to be the same values as prior to execution, MIRAI does not issue a verification error. MIRAI does issue an potential overflow error, if the postcondition requires a greater result than the function actually results in, e.g. \lstinline{#[ensures(*val == old(*val) + 2)]}. This problem does not occur if the mirai-annotations crate is used for designing the postcondition.
 
-\subsubsection{Technology}
-%https://github.com/facebookexperimental/MIRAI/blob/main/documentation/Overview.md#abstract-interpretation
+Additionally, due to the integration in the cargo build process, MIRAI sometimes does not run it's diagnostics as expected, if the Rust program has previously been compiled. Clearing build artifacts with \lstinline{cargo clean} command fixes this problem.
 
-%Benutzt Z3 solver under the hood laut quelltext
+\subsubsection{Technology}
+
+MIRAI is implemented as an interpreter for the generated \acs{mir}, which can handle abstract and concrete values \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. It uses the SMT solver Z3 for its reasoning \cite{facebookexperimental_miraidocumentationtaganalysismd_2021}. 
+
+The tool creates \textit{summaries} for functions \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Summaries consist of a generated list of preconditions for a function, an abstract return value, a list of side-effects and a postcondition \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. These summaries are being generated and cached while MIRAI analyzes the code paths a particular function contains \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. The preconditions are derived from paths, which might trigger a runtime error and must be fulfilled from the caller of the function, to not cause the error \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
+
 \subsubsection{Feedback}
 
-MIRAIs integration into the Rust compiler enables error messages to be displayed as regular Rust error types, as can be seen in \autoref{lst:mirai_mirai_annotations_wrong_postcondition}. Furthermore, due to the usage of Rust's crate system, IDEs are capable of performing syntax checking and error highlighting for the annotations.
+The integration of MIRAI into the Rust compiler enables error messages to be displayed as regular Rust error types, as can be seen in \autoref{lst:mirai_mirai_annotations_wrong_postcondition}. Furthermore, due to the usage of Rust's crate system, IDEs are capable of performing syntax checking and error highlighting for the annotations.
 
 \begin{lstlisting}[float, language=bash, caption= Example output of a verification error in MIRAI with the mirai-annotations crate, label={lst:mirai_mirai_annotations_wrong_postcondition}]
 warning: provably false postcondition
@@ -59,12 +63,27 @@ warning: `mirai` (bin "mirai") generated 1 warning
 \end{lstlisting}
 
 \subsubsection{Language Support and Verification Conditions}
-%Invariants teilweise ja, quantifiers nein aber kein problem, tag analysis/taint analysis!, diagnostics für library code, call graph generator, foreign functions need model (oder sind unreachable bzw. runtime errors?) 
+The supplementary documentation regarding MIRAI does not state any lack of support for certain Rust features. Furthermore, it does not state whether it does or does not support unsafe Rust code. However, while testing MIRAI, I was able to verify postconditions where prior unsafe operations have been executed. This seems to conclude that MIRAI can handle and prove unsafe Rust code.  
+
+Using invariants is possible via the contracts crate, the mirai-annotations crate has no support for this feature \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Invariants can be only applied to struct fields \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
+
+Quantifiers are not supported by MIRAI \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. According to the documentation, this deficiency hasn't been a problem due to possible workarounds with assumptions \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
+
+MIRAI supports tag analysis \cite{facebookexperimental_miraidocumentationtaganalysismd_2021}. In detail, it enables the user to perform taint analysis to track untrusted input, constant time analysis to prevent timing side-channel attacks and combining verification results to their corresponding values \cite{facebookexperimental_miraidocumentationoverviewmd_2021, facebookexperimental_miraidocumentationtaganalysismd_2021}.
+
+Furthermore, MIRAI is able to construct a precise call graph from a given Rust source code \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}. It can generate graphs for \textit{Graphviz}, an open source graph visualisation software \cite{graphviz_graphviz_2023}, or convert them into the \textit{Datalog} programming language \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}.
+
+MIRAI can also handle foreign function calls, which are not present in the generated \acs{mir}, e.g. system calls or functions written in other programming languages \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. These functions need a \textit{model}, that enables MIRAI to reason about them \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI already ships with models for some foreign functions from the Rust standard library \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Additionally, the user can create and supply MIRAI with  models for further foreign functions \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
+
+Furthermore, MIRAI supports assumptions, pre and postconditions.
+
 \subsubsection{Development}
 MIRAI has been developed by Facebook Research to tackle the lack of a static analysis tools for Rust \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This absence of static analysis tools of has been found out while researching and choosing Rust for the development of \textit{Diem} \cite{diem_diemdiem_2023} \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
 
 \subsubsection{Activity}
-MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The latest release at the time of writing, version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are currently no plans to further expand the tool, except for bug fixing \cite{facebookexperimental_miraidocumentationoverviewmd_2021}, so it can be considered as feature complete.
+MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The latest release at the time of writing, version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are subtle additions planed for MIRAI like providing a counter example if runtime error freedom cannot be proven or improved support for parameterized tests \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Therefore, MIRAI can be considered nearly feature complete.
+
+Furthermore, MIRAI has been used to statically verify the the Diem project \cite{diem_diemdiem_2023}.
 
 \subsubsection{Scientific activity}
 
@@ -74,6 +93,7 @@ MIRAI doesn't offer any supplementary scientific publication. It does, however, 
 
 \subsubsection{Documentation}
 
-MIRAI provides an overview \cite{facebookexperimental_miraidocumentationoverviewmd_2021} for its capabilities but does not offer a dedicated user guide. It does offer a guide and examples on how to use the tag analysis feature in MIRAI \cite{facebookexperimental_miraidocumentationtaganalysismd_2021}. It also offers a manual for the graph generator feature \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}. Furthermore, both the contract \cite{karroffel_contracts_2023} and mirai-annotations \cite{herman_venter_mirai-annotations_2023} crate offer a manual on how to use them.
+MIRAI provides an overview \cite{facebookexperimental_miraidocumentationoverviewmd_2021} for its capabilities but does not offer a dedicated user guide. It does offer a guide and examples on how to use the tag analysis feature in MIRAI \cite{facebookexperimental_miraidocumentationtaganalysismd_2021}. It also offers a manual for the graph generator feature \cite{facebookexperimental_miraidocumentationcallgraphmd_2022}. Furthermore, both the contract \cite{karroffel_contracts_2023} and mirai-annotations \cite{herman_venter_mirai-annotations_2023} crate offer a user manual.
 
 MIRAI also provides six code examples, on how to use its verification and tag analysis features \cite{herman_venter_mirai-annotations_2023}.
+Additionally, the Diem project \cite{diem_diemdiem_2023} offers practical examples for the appliance of MIRAI in combination with the mirai-annotations crate.
