@@ -75,13 +75,13 @@ Furthermore, MIRAI is able to construct a precise call graph from a given Rust s
 
 MIRAI can also handle foreign function calls, which are not present in the generated \acs{mir}, e.g. system calls or functions written in other programming languages \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. These functions need a \textit{model}, that enables MIRAI to reason about them \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. MIRAI already ships with models for some foreign functions from the Rust standard library \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Additionally, the user can create and supply MIRAI with  models for further foreign functions \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
 
-Additionally, MIRAI supports assumptions, pre and postconditions.
+Additionally, MIRAI supports assumptions and pre and postconditions.
 
 \subsubsection{Development}
 MIRAI has been developed by Facebook Research to tackle the lack of a static analysis tools for Rust \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. This absence of static analysis tools of has been found out while researching and choosing Rust for the development of \textit{Diem} \cite{diem_diemdiem_2023} \cite{facebookexperimental_miraidocumentationoverviewmd_2021}.
 
 \subsubsection{Activity}
-MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The latest release at the time of writing, version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are subtle additions planed for MIRAI like providing a counter example if runtime error freedom cannot be proven or improved support for parameterized unit tests \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Therefore, MIRAI can be considered nearly feature complete.
+MIRAI is being actively supported with over 1,100 commits in the main branch since 2018 \cite{facebookexperimental_facebookexperimentalmirai_2023}. The latest release at the time of writing, version 1.1.8, has been released in May 2023 \cite{facebookexperimental_release_2023} and is considered stable \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. There are subtle additions planed for MIRAI like providing a counter example if runtime error freedom cannot be proven or improved support for parameterized unit tests \cite{facebookexperimental_miraidocumentationoverviewmd_2021}. Therefore, MIRAI can be considered nearly feature complete. There are currently 9 issues open for MIRAI and 99 have  been closed already \cite{facebookexperimental_issues_2023}.
 
 Furthermore, MIRAI has been used to verify the the Diem project \cite{diem_diemdiem_2023}.
 
